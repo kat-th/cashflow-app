@@ -70,8 +70,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
     static associate(models: any) {
       // Associations go here
       MarketProperty.hasMany(models.PropertyImage, {
-        foreignKey: "propertyId",
         as: "images",
+        foreignKey: "propertyId",
       });
     }
     // declare public static associations: { [key: string]: Association<Model<any, any>, Model<any, any>>; };
