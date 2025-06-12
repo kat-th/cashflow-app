@@ -33,7 +33,7 @@ router.use(
 );
 router.use("/session", sessionRouter);
 router.use("/users", userRouter);
-router.use("/properties", propertyRouter);
+router.use("/property", propertyRouter);
 
 router.get("/restore-user", (req: any, res: Response) => {
   return res.json(req.user);
