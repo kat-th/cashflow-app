@@ -42,6 +42,7 @@ export interface AnalysisInputs {
   insurance: number;
   maintenance: number;
   vacancy: number;
+  propertyTaxRate: number;
   propertyManagement: number;
 }
 
