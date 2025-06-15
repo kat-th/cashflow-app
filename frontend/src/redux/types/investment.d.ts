@@ -42,14 +42,25 @@ export interface IInvestmentAnalysis {
   message?: string;
 }
 
+export interface IInvestmentAnalysisId {
+  id: number | string;
+}
+
 export interface InvestmentState {
   currentAnalysis: IInvestmentAnalysis | null;
+  analysesByPropertyId: Record<string, IInvestmentAnalysis>;
   analysisInputs: IAnalysisInputs;
 }
 
 export interface IInvestmentActionCreator {
   type: string;
-  payload?: IInvestmentAnalysis | IAnalysisInputs | boolean | null;
+  payload?:
+    | IInvestmentAnalysis
+    | IAnalysisInputs
+    | Record<string, IInvestmentAnalysis>
+    | { propertyId: string; analysis: IInvestmentAnalysis }
+    | boolean
+    | null;
 }
 
 export interface IAnalysisPreset {
