@@ -7,13 +7,24 @@ import {
 
 // ============ ACTION TYPES =================
 export const GET_PROPERTY_ANALYSIS = "Investment/getPropertyAnalysis";
+export const GET_ALL_PROPERTY_ANALYSES = "Investment/getAllPropertyAnalyses";
 export const CALCULATE_ANALYSIS = "Investment/calculateAnalysis";
 export const SET_ANALYSIS_INPUTS = "Investment/setAnalysisInputs";
 
 // ============ ACTION CREATOR =================
-const getPropertyAnalysisAction = (analysis: IInvestmentAnalysis) => ({
+const getPropertyAnalysisAction = (
+  propertyId: string,
+  analysis: IInvestmentAnalysis
+) => ({
   type: GET_PROPERTY_ANALYSIS,
-  payload: analysis,
+  payload: { propertyId, analysis },
+});
+
+const getAllPropertyAnalysesAction = (
+  analyses: Record<string, IInvestmentAnalysis>
+) => ({
+  type: GET_ALL_PROPERTY_ANALYSES,
+  payload: analyses,
 });
 
 const calculateAnalysisAction = (analysis: IInvestmentAnalysis) => ({
@@ -36,7 +47,7 @@ export const thunkGetPropertyAnalysis =
       const response = await fetch(`/api/property/${propertyId}/investment`);
       if (response.ok) {
         const data = await response.json();
-        dispatch(getPropertyAnalysisAction(data));
+        dispatch(getPropertyAnalysisAction(propertyId, data));
         return data;
       } else {
         const errorText = await response.text();
@@ -46,6 +57,43 @@ export const thunkGetPropertyAnalysis =
         };
         return errorData;
       }
+    } catch (e) {
+      console.error("Network or parsing error:", e);
+      return {
+        error: "Network error occurred",
+        details: e instanceof Error ? e.message : "Unknown error",
+      };
+    }
+  };
+
+// Get investment analyses for all properties
+export const thunkGetAllPropertyAnalyses =
+  (propertyIds: string[]): any =>
+  async (dispatch: any) => {
+    try {
+      // Option 1: Individual requests (since no bulk endpoint mentioned)
+      const analyses: Record<string, IInvestmentAnalysis> = {};
+
+      const promises = propertyIds.map(async (propertyId) => {
+        try {
+          const response = await fetch(
+            `/api/property/${propertyId}/investment`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            analyses[propertyId] = data;
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching analysis for property ${propertyId}:`,
+            error
+          );
+        }
+      });
+
+      await Promise.allSettled(promises);
+      dispatch(getAllPropertyAnalysesAction(analyses));
+      return analyses;
     } catch (e) {
       console.error("Network or parsing error:", e);
       return {
@@ -92,9 +140,14 @@ export const setAnalysisInputs =
     dispatch(setAnalysisInputsAction(inputs));
   };
 
+export const selectAnalysisForProperty = (state: any, propertyId: string) => {
+  return state.investment.analysesByPropertyId[propertyId] || null;
+};
+
 // ============ REDUCER =================
 const initialState: InvestmentState = {
   currentAnalysis: null,
+  analysesByPropertyId: {},
   analysisInputs: {
     downPayment: 20,
     interestRate: 7.5,
@@ -113,15 +166,40 @@ export default function investmentReducer(
 ): InvestmentState {
   switch (action.type) {
     case GET_PROPERTY_ANALYSIS:
+      const getPayload = action.payload as {
+        propertyId: string;
+        analysis: IInvestmentAnalysis;
+      };
       return {
         ...state,
-        currentAnalysis: action.payload as IInvestmentAnalysis,
+        currentAnalysis: getPayload.analysis,
+        analysesByPropertyId: {
+          ...state.analysesByPropertyId,
+          [getPayload.propertyId]: getPayload.analysis,
+        },
+      };
+
+    case GET_ALL_PROPERTY_ANALYSES:
+      return {
+        ...state,
+        analysesByPropertyId: {
+          ...state.analysesByPropertyId,
+          ...(action.payload as Record<string, IInvestmentAnalysis>),
+        },
       };
 
     case CALCULATE_ANALYSIS:
+      const calcPayload = action.payload as {
+        propertyId: string;
+        analysis: IInvestmentAnalysis;
+      };
       return {
         ...state,
-        currentAnalysis: action.payload as IInvestmentAnalysis,
+        currentAnalysis: calcPayload.analysis,
+        analysesByPropertyId: {
+          ...state.analysesByPropertyId,
+          [calcPayload.propertyId]: calcPayload.analysis,
+        },
       };
 
     case SET_ANALYSIS_INPUTS:

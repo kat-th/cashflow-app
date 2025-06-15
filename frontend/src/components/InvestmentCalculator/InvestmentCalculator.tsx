@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
-import { thunkGetPropertyAnalysis } from "../../redux/investment";
+import {
+  thunkGetPropertyAnalysis,
+  selectAnalysisForProperty,
+} from "../../redux/investment";
 import "./InvestmentCalculator.css";
 
 const InvestmentCalculator: React.FC = () => {
@@ -12,9 +15,16 @@ const InvestmentCalculator: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Get data from Redux store
-  const currentAnalysis = useAppSelector(
-    (state) => state.investment.currentAnalysis
+  //   const investmentAnalysis = useAppSelector((state) =>
+  //     propertyId ? selectAnalysisForProperty(state, propertyId) : null
+  //   );
+
+  const investmentAnalysis = useAppSelector((state) =>
+    propertyId ? selectAnalysisForProperty(state, propertyId) : null
   );
+
+  console.log("====THIS IS INVESTMENT ANALYSIS", investmentAnalysis);
+  //   console.log("====THIS IS cash on cash", investmentAnalysis.cashOnCashReturn);
 
   useEffect(() => {
     const getAnalysis = async () => {
@@ -36,7 +46,7 @@ const InvestmentCalculator: React.FC = () => {
     );
   }
 
-  if (!currentAnalysis) {
+  if (!investmentAnalysis || !investmentAnalysis.analysis) {
     return (
       <div className="investment-calculator">
         <div className="error-container">
@@ -46,7 +56,7 @@ const InvestmentCalculator: React.FC = () => {
     );
   }
 
-  const { analysis } = currentAnalysis;
+  const { analysis } = investmentAnalysis;
 
   const getReturnColorClass = (returnValue: number): string => {
     if (returnValue >= 8) return "return-excellent";

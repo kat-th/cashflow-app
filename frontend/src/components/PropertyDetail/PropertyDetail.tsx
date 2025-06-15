@@ -3,13 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { thunkGetOneProperty } from "../../redux/property";
-// import ReviewStar from "../ReviewStar/ReviewStar"; //change with analysis route
-// import Reviews from "../Reviews/Reviews"; //change with analysis
-import InvestmentCalculator from "../InvestmentCalculator"; //change with inline analysis form
-// import InteractiveButtons from "./InteractiveButtons/InteractiveButtons"; //change with key info
+import InvestmentCalculator from "../InvestmentCalculator";
 import "./PropertyDetail.css";
-// import OpenModalButton from "../OpenModalButton";
-// import DeletePropertyModal from "../DeletePropertyModal";
 
 const propertyDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +14,6 @@ const propertyDetailPage: React.FC = () => {
     propertyId ? state.property.byId[Number(propertyId)] : undefined
   );
   // console.log(property, 'THIS IS property');
-  //   const reviews = useAppSelector((state) => state.reviews.allReviews);
   const currentUser = useAppSelector((state) => state.session.user);
   //   const isOwner = currentUser?.id === property?.owner_id;
   //   const hasReviewed = reviews.some(
