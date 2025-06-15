@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from "react-icons/fa";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useAppSelector } from "../../redux/store";
 
-function ProfileButton():JSX.Element {
+function ProfileButton(): JSX.Element {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const user = useAppSelector((store) => store.session.user);
@@ -21,7 +21,7 @@ function ProfileButton():JSX.Element {
   useEffect(() => {
     if (!showMenu) return;
 
-    const closeMenu = (e:any) => {
+    const closeMenu = (e: any) => {
       if (ulRef.current && !ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
@@ -41,9 +41,9 @@ function ProfileButton():JSX.Element {
   };
 
   return (
-    <>
-      <button onClick={(e) => toggleMenu(e)}>
-        <FaUserCircle />
+    <div className="profile-button-container">
+      <button onClick={(e) => toggleMenu(e)} className="profile-button">
+        <FaUserCircle size={24} />
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
@@ -71,7 +71,7 @@ function ProfileButton():JSX.Element {
           )}
         </ul>
       )}
-    </>
+    </div>
   );
 }
 

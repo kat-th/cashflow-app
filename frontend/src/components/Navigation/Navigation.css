@@ -1,3 +1,31 @@
-.profile-dropdown {
-  position: absolute;
+.navbar {
+  background-color: white;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 80rem;
+  padding: 0 8rem;
+}
+
+.profile-button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.brand-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #4169e1;
 }
