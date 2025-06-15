@@ -1,5 +1,5 @@
 // components/InvestmentCalculator/InvestmentCalculator.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
@@ -9,37 +9,28 @@ import "./InvestmentCalculator.css";
 const InvestmentCalculator: React.FC = () => {
   const dispatch = useDispatch();
   const { propertyId } = useParams<{ propertyId: string }>();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Get data from Redux store
   const currentAnalysis = useAppSelector(
     (state) => state.investment.currentAnalysis
   );
-  const isLoading = useAppSelector((state) => state.investment.isLoading);
 
   useEffect(() => {
-    // Get default analysis when component mounts - only if propertyId exists
-    if (propertyId) {
-      dispatch(thunkGetPropertyAnalysis(propertyId)); // Now propertyId is guaranteed to be string
+    const getAnalysis = async () => {
+      dispatch(thunkGetPropertyAnalysis(propertyId as string));
+      setIsLoaded(true);
+    };
+    if (!isLoaded) {
+      getAnalysis();
     }
-  }, [propertyId, dispatch]);
+  }, [dispatch, isLoaded]);
 
-  // Early return if no propertyId
   if (!propertyId) {
     return (
       <div className="investment-calculator">
         <div className="error-container">
           <p>Property ID is required</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="investment-calculator">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Calculating investment metrics...</p>
         </div>
       </div>
     );
