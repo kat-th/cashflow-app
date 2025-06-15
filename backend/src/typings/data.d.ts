@@ -34,3 +34,17 @@ export interface Property {
   listDate: Date;
   previewImage?: string;
 }
+
+export interface AnalysisInputs {
+  downPayment: number;
+  interestRate: number;
+  loanTerm: number;
+  insurance: number;
+  maintenance: number;
+  vacancy: number;
+  propertyManagement: number;
+}
+
+export interface CreateAnalysisBody {
+  inputs: AnalysisInputs;
+}

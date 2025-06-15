@@ -21,6 +21,7 @@ type MarketPropertyAttributes = {
   lotSize: number;
   propertyType: string;
   listPrice: number;
+  rentZestimate: number;
   listDate: Date;
 };
 
@@ -46,6 +47,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     declare lotSize: number;
     declare propertyType: string;
     declare listPrice: number;
+    declare rentZestimate: number;
     declare listDate: Date;
 
     async getProperty() {
@@ -62,6 +64,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         lotSize: this.lotSize,
         propertyType: this.propertyType,
         listPrice: this.listPrice,
+        rentZestimate: this.rentZestimate,
         listDate: this.listDate,
       };
       return property;
@@ -71,6 +74,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
       // Associations go here
       MarketProperty.hasMany(models.PropertyImage, {
         as: "images",
+        foreignKey: "propertyId",
+      });
+      MarketProperty.hasMany(models.InvestmentAnalysis, {
+        as: "analyses",
         foreignKey: "propertyId",
       });
     }
@@ -148,6 +155,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
         allowNull: false,
       },
       listPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      rentZestimate: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

@@ -63,6 +63,10 @@ module.exports = {
           type: Sequelize.INTEGER(10),
           allowNull: false,
         },
+        rentZestimate: {
+          type: Sequelize.INTEGER(10),
+          allowNull: false,
+        },
         listDate: {
           type: Sequelize.DATE,
           allowNull: false,
