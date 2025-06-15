@@ -96,7 +96,7 @@ export const thunkGetAllProperties =
   };
 
 // Get one property
-export const thunkGetOneproperty =
+export const thunkGetOneProperty =
   (propertyId: string): any =>
   async (dispatch: any) => {
     try {

@@ -8,10 +8,12 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import propertyReducer from "./property";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import investmentReducer from "./investment";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   property: propertyReducer,
+  investment: investmentReducer,
 });
 
 let enhancer;

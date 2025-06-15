@@ -1,20 +1,20 @@
-import { useModal } from '../../context/Modal';
-
+import { useModal } from "../../context/Modal";
 
 interface IOpenModalButon {
-  modalComponent: any;
-  buttonText: any;
-  onButtonClick: any;
-  onModalClose: any;
+  modalComponent: JSX.Element | null;
+  buttonText: React.ReactNode;
+  onButtonClick?: () => void;
+  onModalClose?: (() => void) | null;
+  className?: string;
+  icon?: React.ReactNode;
 }
 
 function OpenModalButton({
   modalComponent, // component to render inside the modal
   buttonText, // text of the button that opens the modal
   onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
-  onModalClose // optional: callback function that will be called once the modal is closed
+  onModalClose, // optional: callback function that will be called once the modal is closed
 }: IOpenModalButon) {
-
   const { setModalContent, setOnModalClose } = useModal();
 
   const onClick = () => {
