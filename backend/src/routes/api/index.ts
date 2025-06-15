@@ -8,6 +8,7 @@ import db from "../../db/models";
 import userRouter from "./users";
 import sessionRouter from "./session";
 import propertyRouter from "./properties";
+import investmentRouter from "./investments";
 import {
   ForbiddenError,
   NoResourceError,
@@ -34,6 +35,7 @@ router.use(
 router.use("/session", sessionRouter);
 router.use("/users", userRouter);
 router.use("/property", propertyRouter);
+router.use("/investment", investmentRouter);
 
 router.get("/restore-user", (req: any, res: Response) => {
   return res.json(req.user);
