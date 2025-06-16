@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { AuthReq } from "../../typings/express";
 import { setTokenCookie, requireAuth, restoreUser } from "../../utils/auth";
 import { handleValidationErrors } from "../../utils/validation";
-import { calculateInvestmentMetrics } from "../../utils/investmentCalculator";
+import { investmentCalculator } from "../../utils/investmentCalculator";
 const { check } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
@@ -63,7 +63,7 @@ router.post(
       }
 
       // Calculate investment metrics
-      const analysisResults = calculateInvestmentMetrics(property, inputs);
+      const analysisResults = investmentCalculator(property, inputs);
 
       res.status(200).json({
         message: "Analysis calculated successfully",
@@ -109,10 +109,7 @@ router.get(
         propertyManagement: 8,
       };
 
-      const defaultResults = calculateInvestmentMetrics(
-        property,
-        defaultInputs
-      );
+      const defaultResults = investmentCalculator(property, defaultInputs);
 
       res.json({
         property: {

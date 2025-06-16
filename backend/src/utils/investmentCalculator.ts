@@ -32,7 +32,7 @@ interface AnalysisResults {
   monthlyPropMgmt: number;
 }
 
-export const calculateInvestmentMetrics = (
+export const investmentCalculator = (
   property: Property,
   inputs: AnalysisInputs
 ): AnalysisResults => {
