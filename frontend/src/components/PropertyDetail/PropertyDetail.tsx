@@ -4,6 +4,7 @@ import { useAppSelector } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { thunkGetOneProperty } from "../../redux/property";
 import InvestmentCalculator from "../InvestmentCalculator";
+
 import "./PropertyDetail.css";
 
 const propertyDetailPage: React.FC = () => {
@@ -13,7 +14,7 @@ const propertyDetailPage: React.FC = () => {
   const property = useAppSelector((state) =>
     propertyId ? state.property.byId[Number(propertyId)] : undefined
   );
-  // console.log(property, 'THIS IS property');
+  console.log(property, "THIS IS property");
   const currentUser = useAppSelector((state) => state.session.user);
   //   const isOwner = currentUser?.id === property?.owner_id;
   //   const hasReviewed = reviews.some(
@@ -40,6 +41,11 @@ const propertyDetailPage: React.FC = () => {
     return <div>Property not found</div>;
   }
 
+  const daysOnMarket = Math.floor(
+    (Date.now() - new Date(property.listDate).getTime()) / (1000 * 60 * 60 * 24)
+  );
+  // console.log("THIS IS DAYS ON MARKET", daysOnMarket);
+
   const handleUpdateproperty = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -51,9 +57,34 @@ const propertyDetailPage: React.FC = () => {
     return <div>Property not found</div>;
   }
 
+  const getReturnColorClass = (returnValue: number): string => {
+    if (returnValue >= 8) return "return-excellent";
+    if (returnValue >= 4) return "return-good";
+    return "return-poor";
+  };
+
+  const getCashFlowColorClass = (cashFlow: number): string => {
+    return cashFlow >= 0 ? "cash-flow-positive" : "cash-flow-negative";
+  };
+
+  const getStrategyColorClass = (strategy: string): string => {
+    switch (strategy) {
+      case "Strong Buy":
+        return "strategy-strong-buy";
+      case "Buy":
+        return "strategy-buy";
+      case "Consider":
+        return "strategy-consider";
+      case "Hold":
+        return "strategy-hold";
+      default:
+        return "strategy-avoid";
+    }
+  };
+
   return (
-    <div className="property-page">
-      <div className="image-gallery">
+    <div className="property-detail-grid">
+      <div className="property-content">
         <div className="spot-images">
           {property.previewImage ? (
             <div className="image-grid">
@@ -77,49 +108,73 @@ const propertyDetailPage: React.FC = () => {
             <p>No Images Available</p>
           )}
         </div>
-      </div>
 
-      <div className="detail-container">
-        <div className="detail-left">
-          {/* <div>
+        <h2 className="property-title">
+          {property.address}
+          {/* {property.city}, {property.state},{" "}{property.zipcode} */}
+        </h2>
+        <div className="property-price-info">
+          <span className="property-price">
+            ${property.listPrice.toLocaleString()}
+          </span>
+          <span className="property-rent">
+            Rent: ${property.rentZestimate}/mo
+          </span>
+        </div>
+
+        <div className="property-detail">
+          <div className="detail-left">
+            {/* <div>
             <InteractiveButtons property={property} />
           </div> */}
-          <div className="top-info">
-            <div className="price-address">
-              <div className="property-price">{property.listPrice}</div>
-              <div className="property-address">
-                {property.address}, {property.city}, {property.state},{" "}
-                {property.zipcode}
+
+            <div className="property-stats-grid">
+              <div className="stat-item">
+                <div className="stat-number">{property.bedrooms}</div>
+                <div className="stat-label">Bedrooms</div>
               </div>
-            </div>
-            <div className="bed-bath-sqft">
-              <div className="property-stat">
-                <span className="stat-number">{property.bedrooms}</span>
-                <span className="stat-label">Bedrooms</span>
+              <div className="stat-item">
+                <div className="state-number">{property.bathrooms}</div>
+                <div className="stat-label">Bathrooms</div>
               </div>
-              <div className="property-stat">
-                <span className="state-number">{property.bathrooms}</span>
-                <span className="stat-label">Bathrooms</span>
+              <div className="stat-item">
+                <div className="stat-number">{property.sqft}</div>
+                <div className="stat-label">Sqft</div>
               </div>
-              <div className="property-state">
-                <span className="stat-number">{property.sqft}</span>
-                <span className="stat-label">Sqft</span>
+              <div className="stat-item">
+                <div className="stat-number">{daysOnMarket}</div>
+                <div className="stat-label">Days</div>
               </div>
             </div>
           </div>
 
-          <div className="additional-info">
-            <span className="tag">{property.propertyType}</span>
-            <span className="tag">{property.yearBuilt}</span>
-            <span className="tag">{property.sqft}</span>
-            <span className="tag">{property.listDate}</span>
+          {/* <hr className="separator" /> */}
+          <div className="property-description-card">
+            <h2 className="description-title">Property Description</h2>
+            <p className="description-text">{property.description}</p>
+            <div className="property-type-tag">
+              <span className="property-type-badge">
+                {property.propertyType}
+              </span>
+              <span className="property-type-badge">
+                {getReturnColorClass(
+                  property.investmentAnalysis.cashOnCashReturn
+                )}
+              </span>
+              <span className="property-type-badge">
+                {getCashFlowColorClass(
+                  property.investmentAnalysis.cashOnCashReturn
+                )}
+              </span>
+              <span className="property-type-badge">
+                {getStrategyColorClass(
+                  property.investmentAnalysis.cashOnCashReturn
+                )}
+              </span>
+            </div>
           </div>
 
-          <hr className="separator" />
-          <h2>About the property</h2>
-          <div className="property-description">{property.description}</div>
-
-          <hr className="separator" />
+          {/* <hr className="separator" /> */}
         </div>
 
         <div className="analysis-section">

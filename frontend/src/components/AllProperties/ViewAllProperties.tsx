@@ -14,9 +14,20 @@ const ViewAllProperties: React.FC = () => {
   const properties = useAppSelector(
     (state: RootState) => state.property.allProperties
   );
-  const allInvestmentAnalyses = useAppSelector(
-    (state: RootState) => state.investment.analysesByPropertyId
+  // Debug logs to see what we're getting
+  console.log("Properties from Redux:", properties);
+  console.log("First property:", properties[0]);
+  console.log(
+    "First property investmentAnalysis:",
+    properties[0]?.investmentAnalysis
   );
+  console.log(
+    "Property keys:",
+    properties[0] ? Object.keys(properties[0]) : "No properties"
+  );
+  // const allInvestmentAnalyses = useAppSelector(
+  //   (state: RootState) => state.investment.analysesByPropertyId
+  // );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,13 +44,6 @@ const ViewAllProperties: React.FC = () => {
       getProperties();
     }
   }, [dispatch, isLoaded]);
-
-  useEffect(() => {
-    if (properties.length > 0) {
-      const propertyIds = properties.map((property) => property.id.toString());
-      dispatch(thunkGetAllPropertyAnalyses(propertyIds));
-    }
-  }, [properties.length, dispatch]);
 
   const goToPropertyDetail = (
     e:
@@ -64,16 +68,16 @@ const ViewAllProperties: React.FC = () => {
     });
   };
 
-  const getReturnColorClass = (returnValue: number): string => {
-    if (returnValue >= 8) return "return-excellent";
-    if (returnValue >= 4) return "return-good";
-    return "return-poor";
-  };
+  // const getReturnColorClass = (returnValue: number): string => {
+  //   if (returnValue >= 8) return "return-excellent";
+  //   if (returnValue >= 4) return "return-good";
+  //   return "return-poor";
+  // };
 
-  const getStrategyColorClass = (strategy: string): string => {
-    const strategyLower = strategy.toLowerCase().replace(" ", "-");
-    return `strategy-${strategyLower}`;
-  };
+  // const getStrategyColorClass = (strategy: string): string => {
+  //   const strategyLower = strategy.toLowerCase().replace(" ", "-");
+  //   return `strategy-${strategyLower}`;
+  // };
 
   return (
     <>
@@ -84,9 +88,9 @@ const ViewAllProperties: React.FC = () => {
           <div className="property-list">
             {properties.map((property, index) => {
               // Get investment analysis for this specific property from the state
-              const investmentAnalysis =
-                allInvestmentAnalyses[property.id.toString()];
-
+              // const investmentAnalysis =
+              //   allInvestmentAnalyses[property.id.toString()];
+              // console.log("THIS IS PROPERTY", index, property);
               return (
                 <div
                   key={property.id || index}
@@ -147,7 +151,7 @@ const ViewAllProperties: React.FC = () => {
 
                       <div className="cash-on-cash-tag">
                         CoC{" "}
-                        {investmentAnalysis.analysis.cashOnCashReturn.toFixed(
+                        {property.investmentAnalysis?.cashOnCashReturn.toFixed(
                           1
                         )}
                         %
