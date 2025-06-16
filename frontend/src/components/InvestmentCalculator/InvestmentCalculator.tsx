@@ -7,6 +7,7 @@ import {
   thunkGetPropertyAnalysis,
   selectAnalysisForProperty,
 } from "../../redux/investment";
+import { Calculator, RefreshCw } from "lucide-react";
 import "./InvestmentCalculator.css";
 
 const InvestmentCalculator: React.FC = () => {
@@ -14,27 +15,33 @@ const InvestmentCalculator: React.FC = () => {
   const { propertyId } = useParams<{ propertyId: string }>();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Get data from Redux store
-  //   const investmentAnalysis = useAppSelector((state) =>
-  //     propertyId ? selectAnalysisForProperty(state, propertyId) : null
-  //   );
+  // Get analysis from property state
+  const property = useAppSelector((state) =>
+    propertyId ? state.property.byId[Number(propertyId)] : undefined
+  );
 
+  // Get analysis from investment state
   const investmentAnalysis = useAppSelector((state) =>
     propertyId ? selectAnalysisForProperty(state, propertyId) : null
   );
 
-  console.log("====THIS IS INVESTMENT ANALYSIS", investmentAnalysis);
-  //   console.log("====THIS IS cash on cash", investmentAnalysis.cashOnCashReturn);
+  console.log("Property from detail:", property);
+  console.log("Property investment analysis:", property?.investmentAnalysis);
+  console.log(
+    "Property investment analysis:",
+    property?.investmentAnalysis.cashOnCashReturn
+  );
+  console.log("Investment analysis from state:", investmentAnalysis);
 
   useEffect(() => {
     const getAnalysis = async () => {
       dispatch(thunkGetPropertyAnalysis(propertyId as string));
       setIsLoaded(true);
     };
-    if (!isLoaded) {
+    if (!isLoaded && propertyId) {
       getAnalysis();
     }
-  }, [dispatch, isLoaded]);
+  }, [dispatch, isLoaded, propertyId]);
 
   if (!propertyId) {
     return (
@@ -46,7 +53,9 @@ const InvestmentCalculator: React.FC = () => {
     );
   }
 
-  if (!investmentAnalysis || !investmentAnalysis.analysis) {
+  const analysis = property?.investmentAnalysis || investmentAnalysis?.analysis;
+
+  if (!analysis) {
     return (
       <div className="investment-calculator">
         <div className="error-container">
@@ -56,7 +65,7 @@ const InvestmentCalculator: React.FC = () => {
     );
   }
 
-  const { analysis } = investmentAnalysis;
+  //   const { analysis } = property?.investmentAnalysis;
 
   const getReturnColorClass = (returnValue: number): string => {
     if (returnValue >= 8) return "return-excellent";
@@ -84,66 +93,75 @@ const InvestmentCalculator: React.FC = () => {
   };
 
   return (
-    <div className="investment-calculator">
-      <div className="calculator-header">
-        <div className="header-content">
-          <div className="calculator-icon">📊</div>
-          <h3 className="calculator-title">Investment Analysis</h3>
-        </div>
+    <div className="investment-analysis-container">
+      <div className="investment-analysis-header">
+        <h3 className="calculator-title">
+          <Calculator className="title-icon" size={20} />
+          Investment Analysis
+        </h3>
+        <button
+          onClick={() => setShowAnalysisModal(true)}
+          className="refresh-button"
+        >
+          <RefreshCw size={14} className="refresh-icon" />
+          Refresh Analysis
+        </button>
       </div>
 
-      <div className="metrics-container">
+      <div className="analysis-metrics">
         <div className="metric-card">
-          <div className="metric-content">
+          <div className="metric-row">
             <span className="metric-label">Cash-on-Cash Return</span>
             <span
               className={`metric-value ${getReturnColorClass(
                 analysis.cashOnCashReturn
               )}`}
             >
-              {analysis.cashOnCashReturn.toFixed(2)}%
+              {analysis.cashOnCashReturn?.toFixed(2) || "N/A"}%
             </span>
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-content">
+          <div className="metric-row">
             <span className="metric-label">Monthly Cash Flow</span>
             <span
               className={`metric-value ${getCashFlowColorClass(
-                analysis.monthlyCashFlow
+                analysis.monthlyCashFlow || 0
               )}`}
             >
-              ${analysis.monthlyCashFlow.toFixed(0)}
+              ${analysis.monthlyCashFlow?.toFixed(0)}
             </span>
           </div>
         </div>
 
         <div className="metric-card">
-          <div className="metric-content">
+          <div className="metric-row">
             <span className="metric-label">Annual Cash Flow</span>
             <span
               className={`metric-value ${getCashFlowColorClass(
-                analysis.annualCashFlow
+                analysis.annualCashFlow || 0
               )}`}
             >
-              ${analysis.annualCashFlow.toFixed(0)}
+              ${analysis.annualCashFlow?.toFixed(0)}
             </span>
           </div>
         </div>
 
-        <div className="metric-card strategy-card">
-          <div className="metric-content strategy-content">
+        <div className="metric-card">
+          <div className="metric-row">
             <span className="metric-label">Investment Strategy</span>
             <span
               className={`strategy-badge ${getStrategyColorClass(
-                analysis.strategy
+                analysis.strategy || "Unknown"
               )}`}
             >
-              {analysis.strategy}
+              {analysis.strategy || "Unknown"}
             </span>
           </div>
-          <p className="strategy-reason">{analysis.strategyReason}</p>
+          <p className="strategy-reason">
+            {analysis.strategyReason || "No strategy reason available"}
+          </p>
         </div>
       </div>
     </div>

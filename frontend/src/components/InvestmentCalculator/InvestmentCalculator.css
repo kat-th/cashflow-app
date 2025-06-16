@@ -1,0 +1,91 @@
+.investment-analysis-container {
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.investment-analysis-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.investment-analysis-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  color: #111827;
+  margin: 0;
+}
+
+.title-icon {
+  margin-right: 0.5rem;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.refresh-button:hover {
+  background-color: #1d4ed8;
+}
+
+.refresh-icon {
+  margin-right: 0.25rem;
+}
+
+.analysis-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metric-card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.metric-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.metric-value {
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+
+.strategy-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.strategy-reason {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.5rem 0 0 0;
+  line-height: 1.4;
+}

@@ -1,3 +1,5 @@
+import { IAnalysisResults } from "./investment";
+
 export interface IProperty {
   id: number;
   address: string;
@@ -14,6 +16,7 @@ export interface IProperty {
   listDate: Date;
   images: string[];
   previewImage: string;
+  investmentAnalysis?: IAnalysisResults | null;
 }
 
 export interface IPropertyFilter {
@@ -39,4 +42,12 @@ export interface PropertyState {
 export interface IPropertyActionCreator {
   type: string;
   payload: IProperty | IProperty[];
+}
+export interface IProperty {
+  id: number;
+  address: string;
+  city: string;
+  state: string;
+  listPrice: number;
+  rentZestimate: number;
 }

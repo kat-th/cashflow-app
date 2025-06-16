@@ -43,55 +43,31 @@ const removePropertyAction = (propertyId: IPropertyId) => ({
 
 // Get all Property
 export const thunkGetAllProperties =
-  (propertyFilters: IPropertyFilter): any =>
+  (filters: IPropertyFilter): any =>
   async (dispatch: any) => {
     try {
-      const url = new URL("/api/property", window.location.origin);
-      if (propertyFilters.propertyType) {
-        url.searchParams.set("propertyType", propertyFilters.propertyType);
-      }
-      if (propertyFilters.minPrice) {
-        url.searchParams.set("minPrice", propertyFilters.minPrice.toString());
-      }
-      if (propertyFilters.maxPrice) {
-        url.searchParams.set("maxPrice", propertyFilters.maxPrice.toString());
-      }
-      if (propertyFilters.minBedrooms) {
-        url.searchParams.set(
-          "minBedrooms",
-          propertyFilters.minBedrooms.toString()
-        );
-      }
-      if (propertyFilters.maxBedrooms) {
-        url.searchParams.set(
-          "maxBedrooms",
-          propertyFilters.maxBedrooms.toString()
-        );
-      }
-      if (propertyFilters.minBathrooms) {
-        url.searchParams.set(
-          "minBathrooms",
-          propertyFilters.minBathrooms.toString()
-        );
-      }
-      if (propertyFilters.maxBathrooms) {
-        url.searchParams.set(
-          "maxBathrooms",
-          propertyFilters.maxBathrooms.toString()
-        );
-      }
-      const response = await fetch(url);
+      const response = await fetch("/api/property");
+
       if (response.ok) {
-        const data = await response.json();
-        dispatch(getAllPropertiesAction(data));
-        return data;
+        const propertiesWithAnalysis = await response.json();
+        // console.log("API Response:", propertiesWithAnalysis[0]);
+
+        dispatch(getAllPropertiesAction(propertiesWithAnalysis));
+
+        return propertiesWithAnalysis;
       } else {
-        throw response;
+        const errorText = await response.text();
+        return {
+          error: `HTTP ${response.status}: ${response.statusText}`,
+          details: errorText,
+        };
       }
     } catch (e) {
-      const err = e as Response;
-      const errorMessages = await err.json();
-      return errorMessages;
+      console.error("Network or parsing error:", e);
+      return {
+        error: "Network error occurred",
+        details: e instanceof Error ? e.message : "Unknown error",
+      };
     }
   };
 
