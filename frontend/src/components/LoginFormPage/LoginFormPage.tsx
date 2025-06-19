@@ -5,8 +5,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 import { useAppSelector } from "../../redux/store";
 
-
-
 function LoginFormPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,11 +32,16 @@ function LoginFormPage() {
     }
   };
 
+  const demoLogin = () => {
+    setEmail("demo@user.io");
+    setPassword("password");
+  };
+
   return (
     <>
       <h1>Log In</h1>
       {errors.length > 0 &&
-        errors.map((message:string) => <p key={message}>{message}</p>)}
+        errors.map((message: string) => <p key={message}>{message}</p>)}
       <form onSubmit={(e) => handleSubmit(e)}>
         <label>
           Email
@@ -61,6 +64,9 @@ function LoginFormPage() {
         </label>
         {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
+        <div className="demo-login-button" onClick={demoLogin}>
+          Demo Login
+        </div>
       </form>
     </>
   );

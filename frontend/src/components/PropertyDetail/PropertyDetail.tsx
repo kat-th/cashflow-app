@@ -4,17 +4,19 @@ import { useAppSelector } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { thunkGetOneProperty } from "../../redux/property";
 import InvestmentCalculator from "../InvestmentCalculator";
+import OpenModalButton from "../OpenModalButton";
 
 import "./PropertyDetail.css";
 
 const propertyDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const { propertyId } = useParams<{ propertyId: string }>();
   const property = useAppSelector((state) =>
     propertyId ? state.property.byId[Number(propertyId)] : undefined
   );
-  console.log(property, "THIS IS property");
+  // console.log(property, "THIS IS property");
   const currentUser = useAppSelector((state) => state.session.user);
   //   const isOwner = currentUser?.id === property?.owner_id;
   //   const hasReviewed = reviews.some(
@@ -118,7 +120,7 @@ const propertyDetailPage: React.FC = () => {
             ${property.listPrice.toLocaleString()}
           </span>
           <span className="property-rent">
-            Rent: ${property.rentZestimate}/mo
+            RentEstimate: ${property.rentZestimate}/mo
           </span>
         </div>
 
@@ -143,13 +145,13 @@ const propertyDetailPage: React.FC = () => {
               </div>
               <div className="stat-item">
                 <div className="stat-number">{daysOnMarket}</div>
-                <div className="stat-label">Days</div>
+                <div className="stat-label">Days On Market</div>
               </div>
             </div>
           </div>
 
           {/* <hr className="separator" /> */}
-          <div className="property-description-card">
+          {/* <div className="property-description-card">
             <h2 className="description-title">Property Description</h2>
             <p className="description-text">{property.description}</p>
             <div className="property-type-tag">
@@ -172,13 +174,16 @@ const propertyDetailPage: React.FC = () => {
                 )}
               </span>
             </div>
-          </div>
+          </div> */}
 
           {/* <hr className="separator" /> */}
         </div>
 
         <div className="analysis-section">
-          <InvestmentCalculator />
+          <InvestmentCalculator
+            property={property}
+            // onClose={() => setShowAnalysisModal(false)}
+          />
         </div>
       </div>
     </div>

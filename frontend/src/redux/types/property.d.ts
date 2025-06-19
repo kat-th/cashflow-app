@@ -13,10 +13,31 @@ export interface IProperty {
   lotSize: number;
   propertyType: string;
   listPrice: number;
+  rentEstimate: number;
   listDate: Date;
   images: string[];
   previewImage: string;
   investmentAnalysis?: IAnalysisResults | null;
+}
+
+export interface IPropertyDetails {
+  id: number;
+  address: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
+  yearBuilt: number;
+  lotSize: number;
+  propertyType: string;
+  listPrice: number;
+  rentZestimate: number;
+  listDate: string;
+  images: string[];
+  previewImage: string;
+  investmentAnalysis: InvestmentAnalysis;
 }
 
 export interface IPropertyFilter {

@@ -9,20 +9,56 @@ export interface IAnalysisInputs {
   propertyManagement: number;
 }
 
-export interface IAnalysisResults {
-  monthlyRent: number;
+export interface IInvestmentCalculator {
+  cashOnCashReturn: number;
   monthlyCashFlow: number;
   annualCashFlow: number;
-  cashOnCashReturn: number;
-  totalMonthlyExpenses: number;
   strategy: string;
   strategyReason: string;
-  monthlyMortgage: number;
-  monthlyPropertyTax: number;
-  monthlyInsurance: number;
-  monthlyMaintenance: number;
-  monthlyVacancy: number;
-  monthlyPropMgmt: number;
+}
+
+export interface IAnalysisResults {
+  analysisInputs: IAnalysisInputs;
+  investmentCalculator: IInvestmentCalculator;
+}
+
+export interface IUserMetrics {
+  // purchasePrice: number;
+  downPayment: number;
+  interestRate: number;
+  loanTerm: number;
+  propertyTaxRate: number;
+  insurance: number;
+  maintenance: number;
+  vacancy: number;
+  // analysisYears: number
+}
+
+export interface MonthlyBreakdown {
+  rent: number;
+  mortgage: number;
+  propertyTax: number;
+  insurance: number;
+  maintenance: number;
+  totalExpenses: number;
+  cashFlow: number;
+}
+
+export interface YearlyBreakdown {
+  cashFlow: number;
+  cashOnCashReturn: number;
+  capRate: number;
+  totalReturn: number;
+  averageAnnualReturn: number;
+}
+export interface YearlyProjection {
+  year: number;
+  propertyValue: number;
+  annualCashFlow: number;
+  cumulativeCashFlow: number;
+  equity: number;
+  totalReturn: number;
+  returnPercent: number;
 }
 
 export interface IProperty {
@@ -35,6 +71,14 @@ export interface IProperty {
 }
 
 export interface IInvestmentAnalysis {
+  property: IProperty;
+  inputs: IAnalysisInputs;
+  analysis: IAnalysisResults;
+  isDefault?: boolean;
+  message?: string;
+}
+
+export interface IPropertyDetails {
   property: IProperty;
   inputs: IAnalysisInputs;
   analysis: IAnalysisResults;

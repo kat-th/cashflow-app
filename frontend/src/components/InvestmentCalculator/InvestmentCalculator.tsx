@@ -3,35 +3,47 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
+import OpenModalButton from "../OpenModalButton";
 import {
   thunkGetPropertyAnalysis,
   selectAnalysisForProperty,
 } from "../../redux/investment";
 import { Calculator, RefreshCw } from "lucide-react";
 import "./InvestmentCalculator.css";
+import UpdateAnalysisModal from "../UpdateAnalysisModal";
+import { IProperty } from "../../redux/types/investment";
+// import { IPropertyDetails } from "../../redux/types/investment";
 
-const InvestmentCalculator: React.FC = () => {
+interface IPropertyProps {
+  property: IProperty;
+  // onClose: () => void;
+}
+
+const InvestmentCalculator: React.FC<IPropertyProps> = ({
+  property,
+  // onClose,
+}) => {
   const dispatch = useDispatch();
   const { propertyId } = useParams<{ propertyId: string }>();
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   // Get analysis from property state
-  const property = useAppSelector((state) =>
-    propertyId ? state.property.byId[Number(propertyId)] : undefined
-  );
+  // const property = useAppSelector((state) =>
+  //   propertyId ? state.property.byId[Number(propertyId)] : undefined
+  // );
 
   // Get analysis from investment state
-  const investmentAnalysis = useAppSelector((state) =>
-    propertyId ? selectAnalysisForProperty(state, propertyId) : null
-  );
+  // const investmentAnalysis = useAppSelector((state) =>
+  //   propertyId ? selectAnalysisForProperty(state, propertyId) : null
+  // );
 
-  console.log("Property from detail:", property);
-  console.log("Property investment analysis:", property?.investmentAnalysis);
-  console.log(
-    "Property investment analysis:",
-    property?.investmentAnalysis.cashOnCashReturn
-  );
-  console.log("Investment analysis from state:", investmentAnalysis);
+  // console.log("PROPERTY DETAIL HERE", property);
+  // console.log("Property investment analysis:", property?.investmentAnalysis);
+  // console.log(
+  //   "Property investment analysis:",
+  //   property?.investmentAnalysis.cashOnCashReturn
+  // );
+  // console.log("Investment analysis from state:", investmentAnalysis);
 
   useEffect(() => {
     const getAnalysis = async () => {
@@ -53,7 +65,7 @@ const InvestmentCalculator: React.FC = () => {
     );
   }
 
-  const analysis = property?.investmentAnalysis || investmentAnalysis?.analysis;
+  const analysis = property?.investmentAnalysis;
 
   if (!analysis) {
     return (
@@ -105,6 +117,14 @@ const InvestmentCalculator: React.FC = () => {
         >
           <RefreshCw size={14} className="refresh-icon" />
           Refresh Analysis
+          {/* <OpenModalButton
+                                buttonText="Refresh Analysis"
+                                className="refresh-button"
+                                onButtonClick={() => {
+                                }}
+                                onModalClose={undefined}
+                                modalComponent={<UpdateAnalysisModal property={property} />}
+                            /> */}
         </button>
       </div>
 
@@ -164,6 +184,25 @@ const InvestmentCalculator: React.FC = () => {
           </p>
         </div>
       </div>
+      {showAnalysisModal && (
+        <UpdateAnalysisModal
+          property={property}
+          onClose={() => setShowAnalysisModal(false)}
+        />
+      )}
+
+      {/* {showAnalysisModal && (
+        <>
+          <OpenModalButton
+            buttonText="Delete Business"
+            onModalClose={null}
+            modalComponent={<UpdateAnalysisModal property={property} />}
+          />
+          <button onClick={(e) => handleUpdateBusiness(e)}>
+            Update business
+          </button>
+        </>
+      )} */}
     </div>
   );
 };

@@ -43,17 +43,19 @@ function ProfileButton(): JSX.Element {
   return (
     <div className="profile-button-container">
       <button onClick={(e) => toggleMenu(e)} className="profile-button">
-        <FaUserCircle size={24} />
+        <FaUserCircle size={32} style={{ color: "#7d7a85" }} />
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
-              <li>
-                <button onClick={(e) => logout(e)}>Log Out</button>
-              </li>
+              <div className="user-name">Hello, {user.username}</div>
+              <div className="user-email">{user.email}</div>
+              <div>
+                <button className="logout-button" onClick={(e) => logout(e)}>
+                  Log Out
+                </button>
+              </div>
             </>
           ) : (
             <>
