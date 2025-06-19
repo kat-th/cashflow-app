@@ -24,8 +24,7 @@ type InvestmentAnalysisAttributes = {
   monthlyCashFlow: number;
   annualCashFlow: number;
   cashOnCashReturn: number;
-  downPaymentAmount: number;
-  totalMonthlyExpensees: number;
+  totalMonthlyExpenses: number;
   strategy: string;
   strategyReason: string;
   monthlyMortgage: number;
@@ -61,8 +60,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     declare monthlyCashFlow: number;
     declare annualCashFlow: number;
     declare cashOnCashReturn: number;
-    declare downPaymentAmount: number;
-    declare totalMonthlyExpensees: number;
+    declare totalMonthlyExpenses: number;
     declare strategy: string;
     declare strategyReason: string;
     declare monthlyMortgage: number;
@@ -89,8 +87,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         monthlyCashFlow: this.monthlyCashFlow,
         annualCashFlow: this.annualCashFlow,
         cashOnCashReturn: this.cashOnCashReturn,
-        downPaymentAmount: this.downPaymentAmount,
-        totalMonthlyExpensees: this.totalMonthlyExpensees,
+        totalMonthlyExpensees: this.totalMonthlyExpenses,
         strategy: this.strategy,
         strategyReason: this.strategyReason,
         monthlyMortgage: this.monthlyMortgage,
@@ -187,11 +184,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.DECIMAL(5, 2),
         allowNull: false,
       },
-      downPaymentAmount: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      totalMonthlyExpensees: {
+      totalMonthlyExpenses: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

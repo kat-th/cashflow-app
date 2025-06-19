@@ -15,47 +15,162 @@ module.exports = {
       [
         {
           propertyId: 1,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/35e2896f7f48471cf297dba8a92cf170-cc_ft_768.webp",
           preview: true,
         },
         {
           propertyId: 1,
-          url: "https://photos.zillowstatic.com/fp/567d547424a28ae204b26ce66d519303-cc_ft_1152.webp",
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
           preview: false,
         },
         {
           propertyId: 1,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 1,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
           preview: false,
         },
         {
           propertyId: 2,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/519e339325107edd037060ac502dba64-cc_ft_768.webp",
           preview: true,
         },
         {
           propertyId: 2,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
           preview: false,
         },
         {
           propertyId: 2,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 2,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
           preview: false,
         },
         {
           propertyId: 3,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/854089f9fb4d5401aae9acc55f83ca55-cc_ft_768.webp",
           preview: true,
         },
         {
           propertyId: 3,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
           preview: false,
         },
         {
           propertyId: 3,
-          url: "https://travelly-images.s3.us-east-2.amazonaws.com/spot1-01.png",
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 3,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 4,
+          url: "https://photos.zillowstatic.com/fp/35e2896f7f48471cf297dba8a92cf170-cc_ft_768.webp",
+          preview: true,
+        },
+        {
+          propertyId: 4,
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 4,
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 4,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 5,
+          url: "https://photos.zillowstatic.com/fp/519e339325107edd037060ac502dba64-cc_ft_768.webp",
+          preview: true,
+        },
+        {
+          propertyId: 5,
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 5,
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 5,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 6,
+          url: "https://photos.zillowstatic.com/fp/854089f9fb4d5401aae9acc55f83ca55-cc_ft_768.webp",
+          preview: true,
+        },
+        {
+          propertyId: 6,
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 6,
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 6,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 7,
+          url: "https://photos.zillowstatic.com/fp/90256876f2985a841a6ac69121f921de-cc_ft_768.webp",
+          preview: true,
+        },
+        {
+          propertyId: 7,
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 7,
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 7,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 8,
+          url: "https://photos.zillowstatic.com/fp/1f8ced2960996942c0b8b9280b6463b9-cc_ft_384.webp",
+          preview: true,
+        },
+        {
+          propertyId: 8,
+          url: "https://photos.zillowstatic.com/fp/561cb3c7289f04d722dfd55c121b40f6-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 8,
+          url: "https://photos.zillowstatic.com/fp/a3f8a7641c1628e755d517fedfb25762-cc_ft_384.webp",
+          preview: false,
+        },
+        {
+          propertyId: 8,
+          url: "https://photos.zillowstatic.com/fp/205fb22aaca9360543fa43bad0bc4d9d-cc_ft_384.webp",
           preview: false,
         },
       ],

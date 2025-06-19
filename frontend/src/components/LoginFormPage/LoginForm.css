@@ -1,0 +1,54 @@
+.modal-content {
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 20rem;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.modal-input {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 15px;
+}
+
+.modal-input input {
+  padding: 0 16px;
+  border: 2px solid #e1e5e9;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal-input input::placeholder {
+  color: #999;
+}
+
+.login-button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: white;
+  color: grey;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgb(90, 78, 78);
+  background-color: #f6c355;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #f6c355;
+  color: black;
+  cursor: pointer;
+}
+
+.demo-login-button {
+  color: rgb(106, 106, 106);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: small;
+}

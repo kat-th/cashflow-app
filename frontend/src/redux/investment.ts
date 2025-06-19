@@ -3,12 +3,13 @@ import {
   IInvestmentAnalysis,
   IInvestmentActionCreator,
   InvestmentState,
+  IAnalysisResults,
 } from "./types/investment";
 
 // ============ ACTION TYPES =================
 export const GET_PROPERTY_ANALYSIS = "Investment/getPropertyAnalysis";
 export const GET_ALL_PROPERTY_ANALYSES = "Investment/getAllPropertyAnalyses";
-export const CALCULATE_ANALYSIS = "Investment/calculateAnalysis";
+export const CREATE_ANALYSIS = "Investment/createAnalysis";
 export const SET_ANALYSIS_INPUTS = "Investment/setAnalysisInputs";
 
 // ============ ACTION CREATOR =================
@@ -27,8 +28,8 @@ const getAllPropertyAnalysesAction = (
   payload: analyses,
 });
 
-const calculateAnalysisAction = (analysis: IInvestmentAnalysis) => ({
-  type: CALCULATE_ANALYSIS,
+const createAnalysisAction = (analysis: IAnalysisResults) => ({
+  type: CREATE_ANALYSIS,
   payload: analysis,
 });
 
@@ -104,18 +105,18 @@ export const thunkGetAllPropertyAnalyses =
   };
 
 // Calculate custom analysis
-export const thunkCalculateAnalysis =
-  (propertyId: string, inputs: IAnalysisInputs): any =>
+export const thunkCreateAnalysis =
+  (propertyId: number, analysis: IAnalysisResults): any =>
   async (dispatch: any) => {
     try {
       const response = await fetch(`/api/property/${propertyId}/investment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ inputs }),
+        body: JSON.stringify({ analysis }),
       });
       if (response.ok) {
         const data = await response.json();
-        dispatch(calculateAnalysisAction(data));
+        dispatch(createAnalysisAction(data));
         return data;
       } else {
         const errorText = await response.text();
@@ -188,7 +189,7 @@ export default function investmentReducer(
         },
       };
 
-    case CALCULATE_ANALYSIS:
+    case CREATE_ANALYSIS:
       const calcPayload = action.payload as {
         propertyId: string;
         analysis: IInvestmentAnalysis;
