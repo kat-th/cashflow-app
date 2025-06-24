@@ -22,8 +22,32 @@ export interface IAnalysisResults {
   investmentCalculator: IInvestmentCalculator;
 }
 
-export interface IUserMetrics {
-  // purchasePrice: number;
+export interface IPropertyAnalysis {
+  id: number;
+  userId: number;
+  address: string;
+  city: string;
+  state: string;
+  propertyType: "single_family" | "multi_family" | "condo" | "townhouse";
+  purchasePrice: number;
+  rentZestimate: number;
+  monthlyCashFlow: number;
+  capRate: number;
+  cashOnCashReturn: number;
+  onePercentRule: boolean;
+  twoPercentRule: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IAnalysisId {
+  id: number | string;
+}
+
+export interface IInvestmentAnalysis {
+  id: number;
+  userId: number;
+  propertyId: number;
   downPayment: number;
   interestRate: number;
   loanTerm: number;
@@ -31,59 +55,17 @@ export interface IUserMetrics {
   insurance: number;
   maintenance: number;
   vacancy: number;
-  // analysisYears: number
-}
-
-export interface MonthlyBreakdown {
-  rent: number;
-  mortgage: number;
-  propertyTax: number;
-  insurance: number;
-  maintenance: number;
-  totalExpenses: number;
-  cashFlow: number;
-}
-
-export interface YearlyBreakdown {
-  cashFlow: number;
+  propertyManagement: number;
+  monthlyRent: number;
+  totalMonthlyExpenses: number;
+  monthlyCashFlow: number;
   cashOnCashReturn: number;
+  netOperatingIncome: number;
   capRate: number;
-  totalReturn: number;
-  averageAnnualReturn: number;
-}
-export interface YearlyProjection {
-  year: number;
-  propertyValue: number;
-  annualCashFlow: number;
-  cumulativeCashFlow: number;
-  equity: number;
-  totalReturn: number;
-  returnPercent: number;
-}
-
-export interface IProperty {
-  id: number;
-  address: string;
-  city: string;
-  state: string;
-  listPrice: number;
-  rentZestimate: number;
-}
-
-export interface IInvestmentAnalysis {
-  property: IProperty;
-  inputs: IAnalysisInputs;
-  analysis: IAnalysisResults;
-  isDefault?: boolean;
-  message?: string;
-}
-
-export interface IPropertyDetails {
-  property: IProperty;
-  inputs: IAnalysisInputs;
-  analysis: IAnalysisResults;
-  isDefault?: boolean;
-  message?: string;
+  onePercentRule: boolean;
+  twoPercentRule: boolean;
+  strategy: string;
+  strategyReason: string;
 }
 
 export interface IInvestmentAnalysisId {
@@ -92,7 +74,8 @@ export interface IInvestmentAnalysisId {
 
 export interface InvestmentState {
   currentAnalysis: IInvestmentAnalysis | null;
-  analysesByPropertyId: Record<string, IInvestmentAnalysis>;
+  allAnalyses: IInvestmentAnalysis[] | null;
+  byId: Record<number, IInvestmentAnalysis>;
   analysisInputs: IAnalysisInputs;
 }
 

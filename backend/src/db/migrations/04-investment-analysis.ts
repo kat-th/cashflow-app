@@ -21,7 +21,6 @@ module.exports = {
         userId: {
           allowNull: false,
           type: Sequelize.INTEGER,
-          unique: true,
         },
         propertyId: {
           type: Sequelize.INTEGER,
@@ -64,11 +63,11 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        monthlyCashFlow: {
+        totalMonthlyExpenses: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        annualCashFlow: {
+        monthlyCashFlow: {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
@@ -76,46 +75,34 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DECIMAL(10, 2),
         },
-        downPaymentAmount: {
+        netOperatingIncome: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          // allowNull: false,
         },
-        totalMonthlyExpensees: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
+        capRate: {
+          type: Sequelize.DECIMAL(10, 2),
+          // allowNull: false,
+        },
+        onePercentRule: {
+          type: Sequelize.BOOLEAN,
+          // allowNull: false,
+        },
+        twoPercentRule: {
+          type: Sequelize.BOOLEAN,
+          // allowNull: false,
         },
         strategy: {
-          allowNull: false,
           type: Sequelize.STRING(50),
+          allowNull: false,
         },
         strategyReason: {
-          allowNull: false,
           type: Sequelize.STRING(100),
+          allowNull: false,
         },
-        // Expenses break down
-        monthlyMortgage: {
+        createdAt: {
+          allowNull: false,
           type: Sequelize.DATE,
-          allowNull: false,
-        },
-        monthlyPropertyTax: {
-          allowNull: false,
-          type: Sequelize.DECIMAL(10, 2),
-        },
-        monthlyInsurance: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        monthlyMaintenance: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
-        monthlyVacancy: {
-          allowNull: false,
-          type: Sequelize.DECIMAL(10, 2),
-        },
-        monthlyPropMgmt: {
-          allowNull: false,
-          type: Sequelize.INTEGER,
+          defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
         updatedAt: {
           allowNull: false,
@@ -127,7 +114,7 @@ module.exports = {
     );
   },
   down: async (queryInterface: any, Sequelize: any) => {
-    options.tableName = "MarketProperties";
+    options.tableName = "InvestmentAnalyses";
     return queryInterface.dropTable(options);
   },
 };

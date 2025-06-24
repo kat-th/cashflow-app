@@ -4,14 +4,11 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
 import OpenModalButton from "../OpenModalButton";
-import {
-  thunkGetPropertyAnalysis,
-  selectAnalysisForProperty,
-} from "../../redux/investment";
+import { thunkGetPropertyAnalysis } from "../../redux/investment";
 import { Calculator, RefreshCw } from "lucide-react";
 import "./InvestmentCalculator.css";
 import UpdateAnalysisModal from "../UpdateAnalysisModal";
-import { IProperty } from "../../redux/types/investment";
+import { IProperty } from "../../redux/types/property";
 // import { IPropertyDetails } from "../../redux/types/investment";
 
 interface IPropertyProps {
