@@ -49,3 +49,24 @@ export interface AnalysisInputs {
 export interface CreateAnalysisBody {
   inputs: AnalysisInputs;
 }
+export interface IMarketProperty {
+  address: string;
+  city: string;
+  state: string;
+  propertyType: "single_family" | "multi_family" | "condo" | "townhouse";
+  listPrice: number;
+  rentZestimate: number;
+}
+
+export interface IPropertyAnalysis {
+  id: number;
+  userId: number;
+  monthlyCashFlow: number;
+  capRate: number;
+  cashOnCashReturn: number;
+  onePercentRule: boolean;
+  twoPercentRule: boolean;
+  createdAt: string;
+  updatedAt: string;
+  MarketProperty: IMarketProperty;
+}

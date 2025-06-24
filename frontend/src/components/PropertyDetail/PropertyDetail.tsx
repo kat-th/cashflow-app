@@ -11,6 +11,7 @@ import "./PropertyDetail.css";
 const propertyDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const { propertyId } = useParams<{ propertyId: string }>();
   const property = useAppSelector((state) =>
@@ -22,8 +23,6 @@ const propertyDetailPage: React.FC = () => {
   //   const hasReviewed = reviews.some(
   //     (review) => review.user_id === currentUser?.id
   //   );
-
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchpropertyDetail = async () => {

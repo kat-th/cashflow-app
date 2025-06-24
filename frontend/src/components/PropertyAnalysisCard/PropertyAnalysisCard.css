@@ -1,0 +1,49 @@
+.analysis-card {
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  padding: 4px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #eff6ff;
+  padding-left: 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.financial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.financial-item {
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.investment-rules {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 1rem;
+}
+
+.rule-one-pct,
+.rule-two-pct {
+  display: inline-flex;
+  align-items: center;
+}
+
+.analysis-tags {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

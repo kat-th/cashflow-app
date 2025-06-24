@@ -37,22 +37,22 @@ module.exports = {
         },
         bedrooms: {
           allowNull: false,
-          type: Sequelize.INTEGER(5),
+          type: Sequelize.INTEGER,
         },
         bathrooms: {
-          type: Sequelize.INTEGER(5),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         sqft: {
-          type: Sequelize.INTEGER(5),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         yearBuilt: {
-          type: Sequelize.INTEGER(4),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         lotSize: {
-          type: Sequelize.INTEGER(10),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         propertyType: {
@@ -60,11 +60,11 @@ module.exports = {
           type: Sequelize.STRING(30),
         },
         listPrice: {
-          type: Sequelize.INTEGER(10),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         rentZestimate: {
-          type: Sequelize.INTEGER(10),
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
         listDate: {

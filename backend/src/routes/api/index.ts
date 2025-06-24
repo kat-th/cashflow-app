@@ -35,7 +35,7 @@ router.use(
 router.use("/session", sessionRouter);
 router.use("/users", userRouter);
 router.use("/property", propertyRouter);
-router.use("/property", investmentRouter);
+router.use("/investment", investmentRouter);
 // router.use("/investment", investmentRouter);
 
 router.get("/restore-user", (req: any, res: Response) => {

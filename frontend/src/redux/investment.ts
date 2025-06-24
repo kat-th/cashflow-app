@@ -4,13 +4,15 @@ import {
   IInvestmentActionCreator,
   InvestmentState,
   IAnalysisResults,
+  IAnalysisId,
 } from "./types/investment";
+import { csrfFetch } from "./csrf";
 
 // ============ ACTION TYPES =================
 export const GET_PROPERTY_ANALYSIS = "Investment/getPropertyAnalysis";
-export const GET_ALL_PROPERTY_ANALYSES = "Investment/getAllPropertyAnalyses";
+export const GET_SAVED_ANALYSES = "Investment/getSavedPropertyAnalyses";
 export const CREATE_ANALYSIS = "Investment/createAnalysis";
-export const SET_ANALYSIS_INPUTS = "Investment/setAnalysisInputs";
+export const REMOVE_ANALYSIS = "Property/removeProperty";
 
 // ============ ACTION CREATOR =================
 const getPropertyAnalysisAction = (
@@ -21,10 +23,8 @@ const getPropertyAnalysisAction = (
   payload: { propertyId, analysis },
 });
 
-const getAllPropertyAnalysesAction = (
-  analyses: Record<string, IInvestmentAnalysis>
-) => ({
-  type: GET_ALL_PROPERTY_ANALYSES,
+const getSavedAnalysesAction = (analyses: IInvestmentAnalysis[]) => ({
+  type: GET_SAVED_ANALYSES,
   payload: analyses,
 });
 
@@ -33,9 +33,9 @@ const createAnalysisAction = (analysis: IAnalysisResults) => ({
   payload: analysis,
 });
 
-const setAnalysisInputsAction = (inputs: IAnalysisInputs) => ({
-  type: SET_ANALYSIS_INPUTS,
-  payload: inputs,
+const removeAnalysisAction = (analysisId: number) => ({
+  type: REMOVE_ANALYSIS,
+  payload: analysisId,
 });
 
 // ============ THUNK =================
@@ -59,96 +59,85 @@ export const thunkGetPropertyAnalysis =
         return errorData;
       }
     } catch (e) {
-      console.error("Network or parsing error:", e);
-      return {
-        error: "Network error occurred",
-        details: e instanceof Error ? e.message : "Unknown error",
-      };
+      const err = e as Response;
+      const errorMessages = await err.json();
+      return errorMessages;
     }
   };
 
-// Get investment analyses for all properties
-export const thunkGetAllPropertyAnalyses =
-  (propertyIds: string[]): any =>
-  async (dispatch: any) => {
-    try {
-      // Option 1: Individual requests (since no bulk endpoint mentioned)
-      const analyses: Record<string, IInvestmentAnalysis> = {};
+// Get investment analyses for current user
+export const thunkGetSavedAnalyses = (): any => async (dispatch: any) => {
+  try {
+    const response = await csrfFetch("/api/investment/current");
 
-      const promises = propertyIds.map(async (propertyId) => {
-        try {
-          const response = await fetch(
-            `/api/property/${propertyId}/investment`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            analyses[propertyId] = data;
-          }
-        } catch (error) {
-          console.error(
-            `Error fetching analysis for property ${propertyId}:`,
-            error
-          );
-        }
-      });
-
-      await Promise.allSettled(promises);
-      dispatch(getAllPropertyAnalysesAction(analyses));
-      return analyses;
-    } catch (e) {
-      console.error("Network or parsing error:", e);
-      return {
-        error: "Network error occurred",
-        details: e instanceof Error ? e.message : "Unknown error",
-      };
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(getSavedAnalysesAction(data.userAnalyses));
+    } else {
+      throw response;
     }
-  };
+  } catch (e) {
+    const err = e as Response;
+    const errorMessages = await err.json();
+    return errorMessages;
+  }
+};
 
 // Calculate custom analysis
 export const thunkCreateAnalysis =
-  (propertyId: number, analysis: IAnalysisResults): any =>
+  (propertyId: number, analysisInputs: IAnalysisResults): any =>
   async (dispatch: any) => {
     try {
       const response = await fetch(`/api/property/${propertyId}/investment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ analysis }),
+        body: JSON.stringify({ analysisInputs }),
       });
       if (response.ok) {
         const data = await response.json();
         dispatch(createAnalysisAction(data));
         return data;
       } else {
-        const errorText = await response.text();
-        const errorData = {
-          error: `HTTP ${response.status}: ${response.statusText}`,
-          details: errorText,
-        };
-        return errorData;
+        throw response;
       }
     } catch (e) {
-      console.error("Network or parsing error:", e);
-      return {
-        error: "Network error occurred",
-        details: e instanceof Error ? e.message : "Unknown error",
-      };
+      const err = e as Response;
+      const errorMessages = await err.json();
+      console.error("Error creating analysis:", errorMessages);
+      return errorMessages;
     }
   };
 
-// ============ SYNC ACTION CREATORS =================
-export const setAnalysisInputs =
-  (inputs: IAnalysisInputs) => (dispatch: any) => {
-    dispatch(setAnalysisInputsAction(inputs));
+// Remove analysis
+export const thunkRemoveAnalysis =
+  (analysisId: number): any =>
+  async (dispatch: any) => {
+    try {
+      const response = await csrfFetch(`/api/investment/${analysisId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        dispatch(removeAnalysisAction(analysisId));
+        return { success: true };
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      const err = e as Response;
+      const errorMessages = await err.json();
+      console.error("Error removing analysis:", errorMessages);
+      return errorMessages;
+    }
   };
-
-export const selectAnalysisForProperty = (state: any, propertyId: string) => {
-  return state.investment.analysesByPropertyId[propertyId] || null;
-};
 
 // ============ REDUCER =================
 const initialState: InvestmentState = {
   currentAnalysis: null,
-  analysesByPropertyId: {},
+  allAnalyses: [],
+  byId: {},
   analysisInputs: {
     downPayment: 20,
     interestRate: 7.5,
@@ -167,47 +156,62 @@ export default function investmentReducer(
 ): InvestmentState {
   switch (action.type) {
     case GET_PROPERTY_ANALYSIS:
-      const getPayload = action.payload as {
+      const propertyData = action.payload as {
         propertyId: string;
         analysis: IInvestmentAnalysis;
       };
       return {
         ...state,
-        currentAnalysis: getPayload.analysis,
-        analysesByPropertyId: {
-          ...state.analysesByPropertyId,
-          [getPayload.propertyId]: getPayload.analysis,
+        currentAnalysis: propertyData.analysis,
+        byId: {
+          ...state.byId,
+          [propertyData.analysis.id]: propertyData.analysis,
         },
       };
 
-    case GET_ALL_PROPERTY_ANALYSES:
-      return {
-        ...state,
-        analysesByPropertyId: {
-          ...state.analysesByPropertyId,
-          ...(action.payload as Record<string, IInvestmentAnalysis>),
-        },
-      };
+    case GET_SAVED_ANALYSES:
+      if (Array.isArray(action.payload)) {
+        const analyses = action.payload as IInvestmentAnalysis[];
+        const newState = { ...state };
+        const newById = { ...newState.byId };
+
+        analyses.forEach((analysis: IInvestmentAnalysis) => {
+          newById[analysis.id] = analysis;
+        });
+
+        newState.byId = newById;
+        newState.allAnalyses = analyses;
+
+        return newState;
+      }
+      return state;
 
     case CREATE_ANALYSIS:
-      const calcPayload = action.payload as {
-        propertyId: string;
-        analysis: IInvestmentAnalysis;
-      };
+      const newAnalysis = action.payload as IInvestmentAnalysis;
+      const currentAnalysis = state.allAnalyses || [];
       return {
         ...state,
-        currentAnalysis: calcPayload.analysis,
-        analysesByPropertyId: {
-          ...state.analysesByPropertyId,
-          [calcPayload.propertyId]: calcPayload.analysis,
+        currentAnalysis: newAnalysis,
+        allAnalyses: [...currentAnalysis, newAnalysis],
+        byId: {
+          ...state.byId,
+          [newAnalysis.id]: newAnalysis,
         },
       };
 
-    case SET_ANALYSIS_INPUTS:
-      return {
-        ...state,
-        analysisInputs: action.payload as IAnalysisInputs,
-      };
+    case REMOVE_ANALYSIS:
+      const analysisIdToRemove = action.payload as IAnalysisId;
+      const newState = { ...state };
+      const newById = { ...newState.byId };
+      const currentAnalyses = newState.allAnalyses || [];
+
+      newState.allAnalyses = currentAnalyses.filter(
+        (analysis) => analysis.id !== analysisIdToRemove.id
+      );
+      delete newById[analysisIdToRemove.id as number];
+      newState.byId = newById;
+
+      return newState;
 
     default:
       return state;

@@ -14,20 +14,7 @@ const ViewAllProperties: React.FC = () => {
   const properties = useAppSelector(
     (state: RootState) => state.property.allProperties
   );
-  // Debug logs to see what we're getting
-  console.log("Properties from Redux:", properties);
-  console.log("First property:", properties[0]);
-  console.log(
-    "First property investmentAnalysis:",
-    properties[0]?.investmentAnalysis
-  );
-  console.log(
-    "Property keys:",
-    properties[0] ? Object.keys(properties[0]) : "No properties"
-  );
-  // const allInvestmentAnalyses = useAppSelector(
-  //   (state: RootState) => state.investment.analysesByPropertyId
-  // );
+  // console.log("THIS IS THE PROPERTIES", properties);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -63,11 +63,9 @@ export const thunkGetAllProperties =
         };
       }
     } catch (e) {
-      console.error("Network or parsing error:", e);
-      return {
-        error: "Network error occurred",
-        details: e instanceof Error ? e.message : "Unknown error",
-      };
+      const err = e as Response;
+      const errorMessages = await err.json();
+      return errorMessages;
     }
   };
 

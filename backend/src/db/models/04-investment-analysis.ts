@@ -21,18 +21,22 @@ type InvestmentAnalysisAttributes = {
   vacancy: number;
   propertyManagement: number;
   monthlyRent: number;
-  monthlyCashFlow: number;
-  annualCashFlow: number;
-  cashOnCashReturn: number;
   totalMonthlyExpenses: number;
+  monthlyCashFlow: number;
+  cashOnCashReturn: number;
+  netOperatingIncome: number;
+  capRate: number;
+  onePercentRule: boolean;
+  twoPercentRule: boolean;
+  // annualCashFlow: number;
   strategy: string;
   strategyReason: string;
-  monthlyMortgage: number;
-  monthlyPropertyTax: number;
-  monthlyInsurance: number;
-  monthlyMaintenance: number;
-  monthlyVacancy: number;
-  monthlyPropMgmt: number;
+  // monthlyMortgage: number;
+  // monthlyPropertyTax: number;
+  // monthlyInsurance: number;
+  // monthlyMaintenance: number;
+  // monthlyVacancy: number;
+  // monthlyPropMgmt: number;
 };
 
 type InvestmentAnalysisCreationAttributes = Optional<
@@ -57,18 +61,22 @@ module.exports = (sequelize: any, DataTypes: any) => {
     declare vacancy: number;
     declare propertyManagement: number;
     declare monthlyRent: number;
-    declare monthlyCashFlow: number;
-    declare annualCashFlow: number;
-    declare cashOnCashReturn: number;
     declare totalMonthlyExpenses: number;
+    declare monthlyCashFlow: number;
+    declare cashOnCashReturn: number;
+    // declare annualCashFlow: number;
+    declare netOperatingIncome: number;
+    declare capRate: number;
+    declare onePercentRule: boolean;
+    declare twoPercentRule: boolean;
     declare strategy: string;
     declare strategyReason: string;
-    declare monthlyMortgage: number;
-    declare monthlyPropertyTax: number;
-    declare monthlyInsurance: number;
-    declare monthlyMaintenance: number;
-    declare monthlyVacancy: number;
-    declare monthlyPropMgmt: number;
+    // declare monthlyMortgage: number;
+    // declare monthlyPropertyTax: number;
+    // declare monthlyInsurance: number;
+    // declare monthlyMaintenance: number;
+    // declare monthlyVacancy: number;
+    // declare monthlyPropMgmt: number;
 
     async getAnalysis() {
       const analysis = {
@@ -84,18 +92,22 @@ module.exports = (sequelize: any, DataTypes: any) => {
         vacancy: this.vacancy,
         propertyManagement: this.propertyManagement,
         monthlyRent: this.monthlyRent,
+        totalMonthlyExpenses: this.totalMonthlyExpenses,
         monthlyCashFlow: this.monthlyCashFlow,
-        annualCashFlow: this.annualCashFlow,
         cashOnCashReturn: this.cashOnCashReturn,
-        totalMonthlyExpensees: this.totalMonthlyExpenses,
+        // annualCashFlow: this.annualCashFlow,
+        netOperatingIncome: this.netOperatingIncome,
+        capRate: this.capRate,
+        onePercentRule: this.onePercentRule,
+        twoPercentRule: this.twoPercentRule,
         strategy: this.strategy,
         strategyReason: this.strategyReason,
-        monthlyMortgage: this.monthlyMortgage,
-        monthlyPropertyTax: this.monthlyPropertyTax,
-        monthlyInsurance: this.monthlyInsurance,
-        monthlyMaintenance: this.monthlyMaintenance,
-        monthlyVacancy: this.monthlyVacancy,
-        monthlyPropMgmt: this.monthlyPropMgmt,
+        // monthlyMortgage: this.monthlyMortgage,
+        // monthlyPropertyTax: this.monthlyPropertyTax,
+        // monthlyInsurance: this.monthlyInsurance,
+        // monthlyMaintenance: this.monthlyMaintenance,
+        // monthlyVacancy: this.monthlyVacancy,
+        // monthlyPropMgmt: this.monthlyPropMgmt,
       };
       return analysis;
     }
@@ -176,10 +188,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      annualCashFlow: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       cashOnCashReturn: {
         type: DataTypes.DECIMAL(5, 2),
         allowNull: false,
@@ -196,29 +204,21 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      monthlyMortgage: {
+      netOperatingIncome: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        // allowNull: false,
       },
-      monthlyPropertyTax: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      monthlyInsurance: {
+      capRate: {
         type: DataTypes.DECIMAL(5, 2),
-        allowNull: false,
+        // allowNull: false,
       },
-      monthlyMaintenance: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      onePercentRule: {
+        type: DataTypes.BOOLEAN,
+        // allowNull: false,
       },
-      monthlyVacancy: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      monthlyPropMgmt: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      twoPercentRule: {
+        type: DataTypes.BOOLEAN,
+        // allowNull: false,
       },
     },
     {

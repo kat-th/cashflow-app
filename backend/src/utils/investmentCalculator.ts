@@ -18,18 +18,22 @@ interface AnalysisInputs {
 interface AnalysisResults {
   monthlyRent: number;
   monthlyCashFlow: number;
-  annualCashFlow: number;
+  // annualCashFlow: number;
   cashOnCashReturn: number;
-  downPaymentAmount: number;
+  capRate: number;
+  onePercentRule: boolean;
+  twoPercentRule: boolean;
+  // downPaymentAmount: number;
   totalMonthlyExpenses: number;
+  netOperatingIncome: number;
   strategy: string;
   strategyReason: string;
-  monthlyMortgage: number;
-  monthlyPropertyTax: number;
-  monthlyInsurance: number;
-  monthlyMaintenance: number;
-  monthlyVacancy: number;
-  monthlyPropMgmt: number;
+  // monthlyMortgage: number;
+  // monthlyPropertyTax: number;
+  // monthlyInsurance: number;
+  // monthlyMaintenance: number;
+  // monthlyVacancy: number;
+  // monthlyPropMgmt: number;
 }
 
 export const investmentCalculator = (
@@ -73,6 +77,15 @@ export const investmentCalculator = (
   const cashOnCashReturn =
     downPaymentAmount > 0 ? (annualCashFlow / downPaymentAmount) * 100 : 0;
 
+  const annualRent = monthlyRent * 12;
+  const annualOperatingExpenses = totalMonthlyExpenses * 12;
+  const netOperatingIncome = annualRent - annualOperatingExpenses;
+
+  const capRate = (netOperatingIncome / purchasePrice) * 100;
+
+  const onePercentRule = monthlyRent >= purchasePrice * 0.01;
+  const twoPercentRule = monthlyRent >= purchasePrice * 0.02;
+
   let strategy = "Hold";
   let strategyReason = "Stable cash flow property with moderate returns";
 
@@ -100,18 +113,21 @@ export const investmentCalculator = (
 
   return {
     monthlyRent: Math.round(monthlyRent * 100) / 100,
-    monthlyCashFlow: Math.round(monthlyCashFlow * 100) / 100,
-    annualCashFlow: Math.round(annualCashFlow * 100) / 100,
-    cashOnCashReturn: Math.round(cashOnCashReturn * 100) / 100,
-    downPaymentAmount: Math.round(downPaymentAmount * 100) / 100,
     totalMonthlyExpenses: Math.round(totalMonthlyExpenses * 100) / 100,
+    monthlyCashFlow: Math.round(monthlyCashFlow * 100) / 100,
+    // annualCashFlow: Math.round(annualCashFlow * 100) / 100,
+    cashOnCashReturn: Math.round(cashOnCashReturn * 100) / 100,
+    netOperatingIncome: Math.round(netOperatingIncome * 100) / 100,
+    capRate: Math.round(capRate * 100) / 100,
+    onePercentRule,
+    twoPercentRule,
     strategy,
     strategyReason,
-    monthlyMortgage: Math.round(monthlyMortgage * 100) / 100,
-    monthlyPropertyTax: Math.round(monthlyPropertyTax * 100) / 100,
-    monthlyInsurance: Math.round(monthlyInsurance * 100) / 100,
-    monthlyMaintenance: Math.round(monthlyMaintenance * 100) / 100,
-    monthlyVacancy: Math.round(monthlyVacancy * 100) / 100,
-    monthlyPropMgmt: Math.round(monthlyPropMgmt * 100) / 100,
+    // monthlyMortgage: Math.round(monthlyMortgage * 100) / 100,
+    // monthlyPropertyTax: Math.round(monthlyPropertyTax * 100) / 100,
+    // monthlyInsurance: Math.round(monthlyInsurance * 100) / 100,
+    // monthlyMaintenance: Math.round(monthlyMaintenance * 100) / 100,
+    // monthlyVacancy: Math.round(monthlyVacancy * 100) / 100,
+    // monthlyPropMgmt: Math.round(monthlyPropMgmt * 100) / 100,
   };
 };
