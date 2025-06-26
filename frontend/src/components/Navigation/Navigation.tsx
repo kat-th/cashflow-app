@@ -1,9 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
 import { Search, Bell, User, Home } from "lucide-react";
 import ProfileButton from "./ProfileButton";
+import { useAppSelector } from "../../redux/store";
 import "./Navigation.css";
 
 function Navigation(): JSX.Element {
+  const user = useAppSelector((store) => store.session.user);
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -19,6 +21,11 @@ function Navigation(): JSX.Element {
         </div>
 
         <div className="navbar-right">
+          {user && (
+            <NavLink to="/property/create-property" className="create-link">
+              Create New Property
+            </NavLink>
+          )}
           <div>
             <ProfileButton />
           </div>

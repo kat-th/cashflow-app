@@ -1,14 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { thunkGetAllProperties } from "../../redux/property";
-import { thunkGetAllPropertyAnalyses } from "../../redux/investment";
-import "./ViewAllProperties.css";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
+import { thunkGetAllProperties } from "../../redux/property";
+import { thunkGetAllPropertyAnalyses } from "../../redux/investment";
+import DeleteModal from "../DeleteModal";
+import OpenModalButton from "../OpenModalButton";
 import { IPropertyFilter } from "../../redux/types/property";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { Trash2, Edit } from "lucide-react";
+import "./ViewAllProperties.css";
 
 const ViewAllProperties: React.FC = () => {
   const properties = useAppSelector(
@@ -21,6 +24,9 @@ const ViewAllProperties: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const filters: IPropertyFilter = {};
+
+  const isLoggedIn = useAppSelector((state) => state.session.user);
+  const { propertyId } = useParams<{ propertyId: string }>();
 
   useEffect(() => {
     const getProperties = async () => {
@@ -42,6 +48,15 @@ const ViewAllProperties: React.FC = () => {
     navigate(`/property/${property.id}`);
   };
 
+  const handleUpdateProperty = (
+    propertyId: number,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/update-property/${propertyId}`);
+  };
+
   const handleFavoriteClick = (e: React.MouseEvent, propertyId: number) => {
     e.stopPropagation();
     setFavorites((prev) => {
@@ -53,6 +68,10 @@ const ViewAllProperties: React.FC = () => {
       }
       return newFavorite;
     });
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   // const getReturnColorClass = (returnValue: number): string => {
@@ -80,7 +99,7 @@ const ViewAllProperties: React.FC = () => {
               // console.log("THIS IS PROPERTY", index, property);
               return (
                 <div
-                  key={property.id || index}
+                  key={`${property.id}-${index}`}
                   className="property-container"
                   onClick={(e) => goToPropertyDetail(e, property)}
                 >
@@ -136,12 +155,34 @@ const ViewAllProperties: React.FC = () => {
                         {property.city}, {property.state}, {property.zipcode}
                       </div>
 
-                      <div className="cash-on-cash-tag">
-                        CoC{" "}
-                        {property.investmentAnalysis?.cashOnCashReturn.toFixed(
-                          1
+                      <div className="footer">
+                        <div className="cash-on-cash-tag">
+                          CoC{" "}
+                          {property.investmentAnalysis?.cashOnCashReturn.toFixed(
+                            1
+                          )}
+                          %
+                        </div>
+                        {isLoggedIn && (
+                          <div className="update-delete-icon">
+                            <button
+                              onClick={(e) =>
+                                handleUpdateProperty(property.id, e)
+                              }
+                            >
+                              <Edit />
+                            </button>
+                            <div onClick={handleDeleteClick}>
+                              <OpenModalButton
+                                icon={<Trash2 />}
+                                onModalClose={null}
+                                modalComponent={
+                                  <DeleteModal propertyId={property.id} />
+                                }
+                              />
+                            </div>
+                          </div>
                         )}
-                        %
                       </div>
                     </div>
                   </div>

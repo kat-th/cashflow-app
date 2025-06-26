@@ -38,6 +38,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
         "propertyType",
         "listPrice",
         "listDate",
+        "rentZestimate",
       ],
       include: [
         {
@@ -298,7 +299,159 @@ router.get(
 );
 
 // Delete an analysis for a property
+router.delete(
+  "/:propertyId",
+  requireAuth,
+  async (req: AuthReq, res: Response, next: NextFunction) => {
+    const { propertyId } = req.params;
+    const propertyToDelete = await MarketProperty.findByPk(propertyId);
 
-// Get all analysis for a property
+    if (!propertyToDelete) {
+      return res.status(404).json({
+        message: "Property couldn't be found",
+      });
+    }
+
+    await propertyToDelete.destroy();
+    return res.json({
+      message: "Successfully deleted",
+    });
+  }
+);
+
+// Create a new property
+router.post("/", requireAuth, async (req: AuthReq, res: Response) => {
+  const {
+    address,
+    city,
+    state,
+    zipcode,
+    bedrooms,
+    bathrooms,
+    sqft,
+    yearBuilt,
+    lotSize,
+    propertyType,
+    listPrice,
+    rentZestimate,
+    listDate,
+    previewImage,
+    images,
+  } = req.body;
+
+  // const ownerId = req.user?.id || 1;
+
+  const newProperty = await MarketProperty.create({
+    address,
+    city,
+    state,
+    zipcode,
+    bedrooms,
+    bathrooms,
+    sqft,
+    yearBuilt,
+    lotSize,
+    propertyType,
+    listPrice,
+    rentZestimate,
+    listDate,
+  });
+
+  const propertyId = newProperty.id;
+
+  // Create preview Image
+
+  const newSpotImage = await PropertyImage.create({
+    propertyId,
+    url: previewImage,
+    preview: true,
+  });
+
+  // Create additional images
+  if (images && images.length > 0) {
+    const imagePromises = images.map((url: string) =>
+      PropertyImage.create({
+        propertyId,
+        url,
+        preview: false,
+      })
+    );
+    await Promise.all(imagePromises);
+  }
+
+  const result = {
+    id: newProperty.id,
+    ownerId: newProperty.ownerId,
+    address: newProperty.address,
+    city: newProperty.city,
+    state: newProperty.state,
+    zipcode: newProperty.country,
+    bedrooms: newProperty.lat,
+    bathrooms: newProperty.lng,
+    sqft: newProperty.name,
+    propertyType: newProperty.description,
+    listPrice: newProperty.price,
+    previewImage: newSpotImage.url,
+    images: images || [],
+  };
+
+  return res.status(201).json({
+    message: "Property successfully created",
+    newProperty: result,
+  });
+});
+
+// Update a property
+router.put(
+  "/:propertyId",
+  requireAuth,
+  async (req: AuthReq, res: Response, next: NextFunction) => {
+    try {
+      const { propertyId } = req.params;
+      const {
+        address,
+        city,
+        state,
+        zipcode,
+        bedrooms,
+        bathrooms,
+        sqft,
+        yearBuilt,
+        lotSize,
+        propertyType,
+        listPrice,
+        rentZestimate,
+        listDate,
+      } = req.body;
+
+      const propertyToUpdate = await MarketProperty.findByPk(propertyId);
+
+      if (!propertyToUpdate) {
+        return res.status(404).json({
+          message: "Property couldn't be found",
+        });
+      }
+
+      await propertyToUpdate.update({
+        address: address,
+        city: city,
+        state: state,
+        zipcode,
+        bedrooms,
+        bathrooms,
+        sqft,
+        yearBuilt,
+        lotSize,
+        propertyType,
+        listPrice,
+        rentZestimate,
+        listDate,
+      });
+      return res.status(200).json(propertyToUpdate);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export = router;

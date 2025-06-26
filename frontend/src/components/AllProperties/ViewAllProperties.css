@@ -125,7 +125,7 @@ body {
 .cash-on-cash-tag {
   background-color: #e53e3e;
   color: white;
-  padding: 4px 8px; /* Fixed: was 4pxx */
+  padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;

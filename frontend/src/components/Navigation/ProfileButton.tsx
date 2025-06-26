@@ -6,6 +6,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useAppSelector } from "../../redux/store";
+import { NavLink } from "react-router-dom";
 
 function ProfileButton(): JSX.Element {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function ProfileButton(): JSX.Element {
             <>
               <div className="user-name">Hello, {user.username}</div>
               <div className="user-email">{user.email}</div>
+
               <div>
                 <button className="logout-button" onClick={(e) => logout(e)}>
                   Log Out

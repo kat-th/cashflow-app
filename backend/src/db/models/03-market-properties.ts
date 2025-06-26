@@ -113,7 +113,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [60, 60],
+          len: [5, 5],
         },
       },
       bedrooms: {

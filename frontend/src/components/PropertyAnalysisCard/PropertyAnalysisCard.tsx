@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
 import OpenModalButton from "../OpenModalButton";
-import DeleteAnalysisModal from "../DeleteAnalysisModal";
+import DeleteAnalysisModal from "../DeleteModal";
 import {
   Home,
   Building,
