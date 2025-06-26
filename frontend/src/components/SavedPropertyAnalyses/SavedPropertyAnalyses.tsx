@@ -15,7 +15,7 @@ const SavedPropertyAnalyses = () => {
   // const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const currentUser = useAppSelector((state) => state.session.user);
   const savedAnalyses = useAppSelector((state) => state.investment.allAnalyses);
-  console.log("THIS IS THE USER SAVED ANALYSES", savedAnalyses);
+  // console.log("THIS IS THE USER SAVED ANALYSES", savedAnalyses);
 
   // const analyses = useAppSelector(
   //   (state: RootState) => state.analysis.allAnalyses

@@ -94,7 +94,7 @@ const CreatePropertyFormPage = () => {
 
     const newProperty = await dispatch(thunkCreateProperty(propertyData));
     const newPropertyId = newProperty.newProperty.id;
-    console.log("THIS IS THE NEW PROPERTYYYYYY", newProperty);
+    // console.log("THIS IS THE NEW PROPERTYYYYYY", newProperty);
     if (newProperty) {
       // navigate('/');
       navigate(`/property/${newPropertyId}`);

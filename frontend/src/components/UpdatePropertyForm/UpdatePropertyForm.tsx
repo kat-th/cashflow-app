@@ -35,8 +35,8 @@ const UpdatePropertyFormPage = () => {
   );
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  console.log("THIS IS PROPERTY ID", propertyId);
-  console.log("THIS IS PROPERTY DATA", property);
+  // console.log("THIS IS PROPERTY ID", propertyId);
+  // console.log("THIS IS PROPERTY DATA", property);
 
   const [address, setAddress] = useState(property.address || "");
   const [city, setCity] = useState(property.city || "");

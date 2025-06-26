@@ -59,11 +59,7 @@ export const thunkGetAllProperties =
 
         return propertiesWithAnalysis;
       } else {
-        const errorText = await response.text();
-        return {
-          error: `HTTP ${response.status}: ${response.statusText}`,
-          details: errorText,
-        };
+        throw response;
       }
     } catch (e) {
       const err = e as Response;
