@@ -59,11 +59,12 @@ module.exports = (sequelize: any, DataTypes: any) => {
       url: {
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: false,
       },
       preview: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: true,
       },
     },
     {

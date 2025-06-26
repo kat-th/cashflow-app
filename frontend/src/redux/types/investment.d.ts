@@ -22,6 +22,14 @@ export interface IAnalysisResults {
   investmentCalculator: IInvestmentCalculator;
 }
 
+export interface IDefaultAnalysis {
+  totalMonthlyExpenses: number;
+  monthlyCashFlow: number;
+  cashOnCashReturn: number;
+  strategy: string;
+  strategyReason: string;
+}
+
 export interface IPropertyAnalysis {
   id: number;
   userId: number;

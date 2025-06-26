@@ -3,13 +3,17 @@ import { useDispatch } from "react-redux";
 import { thunkRemoveAnalysis } from "../../redux/investment";
 import { useModal } from "../../context/Modal";
 import { useNavigate } from "react-router-dom";
+import "./DeleteModal.css";
+import { thunkRemoveProperty } from "../../redux/property";
 
 export interface DeleteAnalysisModalProps {
-  analysisId: number;
+  analysisId?: number;
+  propertyId?: number;
 }
 
 const DeleteAnalysisModal: React.FC<DeleteAnalysisModalProps> = ({
   analysisId,
+  propertyId,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,23 +23,45 @@ const DeleteAnalysisModal: React.FC<DeleteAnalysisModalProps> = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    await dispatch(thunkRemoveAnalysis(analysisId));
+
+    if (analysisId !== undefined) {
+      const itemToDelete = "Analysis";
+      await dispatch(thunkRemoveAnalysis(analysisId));
+    } else if (propertyId !== undefined) {
+      const itemToDelete = "Property";
+      await dispatch(thunkRemoveProperty(propertyId));
+    }
+
     closeModal();
-    navigate("/investment");
   };
+
+  const modalMessage = () => {
+    if (analysisId !== undefined) {
+      return {
+        message: "Are you sure you want to remove this analysis?",
+      };
+    } else if (propertyId !== undefined) {
+      return {
+        message: "Are you sure you want to remove this property?",
+      };
+    }
+  };
+
+  const content = modalMessage();
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <div className="modal-header">
+        <div className="delete-modal-header">
           <h4>Confirm Delete</h4>
-          <p>Are you sure you want to remove this spot?</p>
+          <p>{content?.message}</p>
         </div>
         <div className="modal-buttons">
           <button className="confirm-button" onClick={handleDelete}>
-            Yes (Delete Analysis)
+            Confirm
           </button>
           <button className="cancel-button" onClick={closeModal}>
-            No (Keep Analysis)
+            Cancel
           </button>
         </div>
       </div>

@@ -4,7 +4,10 @@ import {
   IPropertyActionCreator,
   IPropertyId,
   IPropertyFilter,
+  IPropertyForm,
+  IUpdatePropertyForm,
 } from "./types/property";
+import { csrfFetch } from "./csrf";
 
 // ============ ACTION TYPES =================
 export const GET_ALL_PROPERTY = "Property/getallProperties";
@@ -46,7 +49,7 @@ export const thunkGetAllProperties =
   (filters: IPropertyFilter): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch("/api/property");
+      const response = await csrfFetch("/api/property");
 
       if (response.ok) {
         const propertiesWithAnalysis = await response.json();
@@ -56,11 +59,7 @@ export const thunkGetAllProperties =
 
         return propertiesWithAnalysis;
       } else {
-        const errorText = await response.text();
-        return {
-          error: `HTTP ${response.status}: ${response.statusText}`,
-          details: errorText,
-        };
+        throw response;
       }
     } catch (e) {
       const err = e as Response;
@@ -74,7 +73,7 @@ export const thunkGetOneProperty =
   (propertyId: string): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch(`/api/property/${propertyId}`);
+      const response = await csrfFetch(`/api/property/${propertyId}`);
       if (response.ok) {
         const data = await response.json();
         dispatch(getOnePropertyAction(data));
@@ -91,14 +90,13 @@ export const thunkGetOneProperty =
 
 // Create a new property
 export const thunkCreateProperty =
-  (propertyData: IProperty): any =>
+  (propertyData: IPropertyForm): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch("/api/property/", {
+      const response = await csrfFetch("/api/property/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(propertyData),
-        credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
@@ -116,14 +114,13 @@ export const thunkCreateProperty =
 
 // Update a new property
 export const thunkUpdateProperty =
-  (propertyData: IProperty, propertyId: number | string): any =>
+  (propertyData: IUpdatePropertyForm, propertyId: number | string): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch(`/api/property/${propertyId}`, {
+      const response = await csrfFetch(`/api/property/${propertyId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(propertyData),
-        credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
@@ -141,19 +138,20 @@ export const thunkUpdateProperty =
 
 // Delete a new property
 export const thunkRemoveProperty =
-  (propertyId: IPropertyId): any =>
+  (propertyId: number): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch(`/api/property/${propertyId}`, {
+      const response = await csrfFetch(`/api/property/${propertyId}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
-        const data = await response.json();
-        dispatch(removePropertyAction(propertyId));
-        return data;
+        dispatch(removePropertyAction({ id: propertyId }));
       } else {
-        throw response;
+        const message = await response.json();
+        throw message;
       }
     } catch (e) {
       const err = e as Response;

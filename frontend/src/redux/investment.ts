@@ -45,18 +45,15 @@ export const thunkGetPropertyAnalysis =
   (propertyId: string): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch(`/api/property/${propertyId}/investment`);
+      const response = await csrfFetch(
+        `/api/property/${propertyId}/investment`
+      );
       if (response.ok) {
         const data = await response.json();
         dispatch(getPropertyAnalysisAction(propertyId, data));
         return data;
       } else {
-        const errorText = await response.text();
-        const errorData = {
-          error: `HTTP ${response.status}: ${response.statusText}`,
-          details: errorText,
-        };
-        return errorData;
+        throw response;
       }
     } catch (e) {
       const err = e as Response;
@@ -68,7 +65,7 @@ export const thunkGetPropertyAnalysis =
 // Get investment analyses for current user
 export const thunkGetSavedAnalyses = (): any => async (dispatch: any) => {
   try {
-    const response = await csrfFetch("/api/investment/current");
+    const response = await csrfFetch(`/api/investment/current`);
 
     if (response.ok) {
       const data = await response.json();
@@ -88,11 +85,14 @@ export const thunkCreateAnalysis =
   (propertyId: number, analysisInputs: IAnalysisResults): any =>
   async (dispatch: any) => {
     try {
-      const response = await fetch(`/api/property/${propertyId}/investment`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ analysisInputs }),
-      });
+      const response = await csrfFetch(
+        `/api/property/${propertyId}/investment`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ analysisInputs }),
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         dispatch(createAnalysisAction(data));

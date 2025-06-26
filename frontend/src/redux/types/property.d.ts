@@ -1,4 +1,4 @@
-import { IAnalysisResults } from "./investment";
+import { IAnalysisResults, IDefaultAnalysis } from "./investment";
 
 export interface IProperty {
   id: number;
@@ -37,7 +37,7 @@ export interface IPropertyDetails {
   listDate: string;
   images: string[];
   previewImage: string;
-  investmentAnalysis: InvestmentAnalysis;
+  investmentAnalysis: IDefaultAnalysis;
 }
 
 export interface IPropertyFilter {
@@ -71,4 +71,39 @@ export interface IProperty {
   state: string;
   listPrice: number;
   rentZestimate: number;
+}
+
+export interface IPropertyForm {
+  address: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
+  yearBuilt: number;
+  lotSize: number;
+  propertyType: string;
+  listPrice: number;
+  rentZestimate: number;
+  listDate: string;
+  previewImage: string;
+  images: string[];
+  // investmentAnalysis: IDefaultAnalysis;
+}
+
+export interface IUpdatePropertyForm {
+  address: string;
+  city: string;
+  state: string;
+  zipcode: string;
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
+  yearBuilt: number;
+  lotSize: number;
+  propertyType: string;
+  listPrice: number;
+  rentZestimate: number;
+  listDate: string;
 }

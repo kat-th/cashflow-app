@@ -1,0 +1,54 @@
+.modal-overlay {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 35rem;
+  position: relative;
+  text-align: center;
+}
+
+.modal-content p {
+  color: rgb(95, 91, 91);
+  font-size: 0.9rem;
+}
+
+.modal-buttons {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.confirm-button {
+  padding: 7px 50px;
+  border-radius: 5px;
+  border: none;
+  background-color: #df3737;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-color: #b93838;
+}
+
+.cancel-button {
+  padding: 7px 50px;
+  border-radius: 5px;
+  border: 2px solid rgb(214, 211, 211);
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: rgb(165, 159, 159);
+  color: white;
+  border: 2px solid rgb(165, 159, 159);
+}
