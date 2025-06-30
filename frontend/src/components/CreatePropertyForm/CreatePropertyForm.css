@@ -1,15 +1,18 @@
 .create-property-form {
   max-width: 700px;
   margin: 0 auto;
-  /* background: transparent; */
   line-height: 1.5;
 }
 
 .create-property-form h2 {
   text-align: center;
-  /* margin-bottom: 3rem; */
   margin: 2rem 2rem;
 }
+/* .property-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+} */
 
 .autofill-button {
   margin-bottom: 1rem;
@@ -41,6 +44,10 @@
   margin-bottom: 1.5rem;
 }
 
+.form-field select {
+  font-size: 0.875rem;
+}
+
 .field-label {
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
@@ -58,6 +65,7 @@
 
 .form-field input,
 .property-type-select {
+  width: 100%;
   padding: 0.75rem 0;
   border: none;
   border-bottom: 1px solid #d1d5db;

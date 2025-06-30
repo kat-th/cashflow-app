@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/store";
 import { thunkGetAllProperties } from "../../redux/property";
-import { thunkGetAllPropertyAnalyses } from "../../redux/investment";
+// import { thunkGetAllPropertyAnalyses } from "../../redux/investment";
 import DeleteModal from "../DeleteModal";
 import OpenModalButton from "../OpenModalButton";
 import { IPropertyFilter } from "../../redux/types/property";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { Trash2, Edit } from "lucide-react";
+import { Trash2, Edit, Heart, MapPin } from "lucide-react";
 import "./ViewAllProperties.css";
 
 const ViewAllProperties: React.FC = () => {
