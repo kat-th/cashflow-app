@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { thunkCreateProperty } from "../../redux/property";
 import { IPropertyForm, ValidationErrors } from "../../redux/types/property";
-// import "./CreatePropertyForm.css";
+import "./CreatePropertyForm.css";
 // import { RootState, useAppSelector } from "../../redux/store";
 
 interface ICreatePropertyError {
@@ -134,9 +134,11 @@ const CreatePropertyFormPage = () => {
         {/* Basic Property Info */}
         <section className="property-basic-info">
           <h3>Property Details</h3>
-
+          <div className="autofill-button" onClick={autoFill}>
+            Click to auto-fill
+          </div>
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>Property Type *</span>
               {errors.propertyType && (
                 <span className="field-error">{errors.propertyType}</span>
@@ -152,13 +154,12 @@ const CreatePropertyFormPage = () => {
               <option value="Condo">Condo</option>
               <option value="Townhouse">Townhouse</option>
               <option value="Multi-Family">Multi-Family</option>
-              <option value="Apartment">Apartment</option>
             </select>
           </label>
 
           <div className="bedrooms-bathrooms-row">
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>Bedrooms *</span>
                 {errors.bedrooms && (
                   <span className="field-error">{errors.bedrooms}</span>
@@ -176,7 +177,7 @@ const CreatePropertyFormPage = () => {
             </label>
 
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>Bathrooms *</span>
                 {errors.bathrooms && (
                   <span className="field-error">{errors.bathrooms}</span>
@@ -196,7 +197,7 @@ const CreatePropertyFormPage = () => {
 
           <div className="property-size-row">
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>Square Footage *</span>
                 {errors.sqft && (
                   <span className="field-error">{errors.sqft}</span>
@@ -213,7 +214,7 @@ const CreatePropertyFormPage = () => {
             </label>
 
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>Year Built</span>
                 {errors.yearBuilt && (
                   <span className="field-error">{errors.yearBuilt}</span>
@@ -232,7 +233,7 @@ const CreatePropertyFormPage = () => {
           </div>
 
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>Lot Size (sq ft)</span>
               {errors.lotSize && (
                 <span className="field-error">{errors.lotSize}</span>
@@ -254,7 +255,7 @@ const CreatePropertyFormPage = () => {
           <h3>Property Address</h3>
 
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>Street Address *</span>
               {errors.address && (
                 <span className="field-error">{errors.address}</span>
@@ -271,7 +272,7 @@ const CreatePropertyFormPage = () => {
 
           <div className="address-details-row">
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>City *</span>
                 {errors.city && (
                   <span className="field-error">{errors.city}</span>
@@ -287,7 +288,7 @@ const CreatePropertyFormPage = () => {
             </label>
 
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>State *</span>
                 {errors.state && (
                   <span className="field-error">{errors.state}</span>
@@ -304,7 +305,7 @@ const CreatePropertyFormPage = () => {
             </label>
 
             <label className="form-field">
-              <div className="field-label-row">
+              <div className="field-label">
                 <span>Zipcode *</span>
                 {errors.zipcode && (
                   <span className="field-error">{errors.zipcode}</span>
@@ -327,7 +328,7 @@ const CreatePropertyFormPage = () => {
           <h3>Financial Information</h3>
 
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>List Price * ($)</span>
               {errors.listPrice && (
                 <span className="field-error">{errors.listPrice}</span>
@@ -344,7 +345,7 @@ const CreatePropertyFormPage = () => {
           </label>
 
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>Monthly Rent Estimate ($)</span>
               {errors.rentZestimate && (
                 <span className="field-error">{errors.rentZestimate}</span>
@@ -361,7 +362,7 @@ const CreatePropertyFormPage = () => {
           </label>
 
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>List Date</span>
               {/* {errors.listDate && (
                 <span className="field-error">{errors.listDate}</span>
@@ -379,10 +380,9 @@ const CreatePropertyFormPage = () => {
         {/* Images Section */}
         <section className="property-images-section">
           <h3>Property Photos</h3>
-          <p>Add images to showcase your property</p>
 
           <label className="form-field">
-            <div className="field-label-row">
+            <div className="field-label">
               <span>Preview Image URL *</span>
               {errors.previewImage && (
                 <span className="field-error">{errors.previewImage}</span>
@@ -400,7 +400,7 @@ const CreatePropertyFormPage = () => {
           <h4>Additional Images</h4>
           {images.map((image, index) => (
             <label key={index} className="form-field">
-              <span>Image {index + 1} URL</span>
+              <span className="field-label">Image {index + 1} URL</span>
               <input
                 className={`additional-image-input image-${index + 1}`}
                 type="url"
@@ -423,9 +423,9 @@ const CreatePropertyFormPage = () => {
           <button type="submit" className="submit-property-btn">
             Create Property
           </button>
-          <button className="autofill-btn" type="button" onClick={autoFill}>
+          {/* <button className="autofill-btn" type="button" onClick={autoFill}>
             AutoFill
-          </button>
+          </button> */}
         </div>
       </div>
     </form>
