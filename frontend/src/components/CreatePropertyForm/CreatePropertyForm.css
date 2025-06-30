@@ -1,0 +1,111 @@
+.create-property-form {
+  max-width: 700px;
+  margin: 0 auto;
+  /* background: transparent; */
+  line-height: 1.5;
+}
+
+.create-property-form h2 {
+  text-align: center;
+  /* margin-bottom: 3rem; */
+  margin: 2rem 2rem;
+}
+
+.autofill-button {
+  margin-bottom: 1rem;
+  color: grey;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.property-basic-info h3,
+.property-address-section h3,
+.property-financial-section h3,
+.property-images-section h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+}
+
+.property-images-section h4 {
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.field-label span {
+  font-size: 0.875rem;
+}
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.form-field input,
+.property-type-select {
+  padding: 0.75rem 0;
+  border: none;
+  border-bottom: 1px solid #d1d5db;
+  border-radius: 0;
+  font-size: 1rem;
+  transition: border-color 0.15s ease;
+  background: transparent;
+}
+
+.form-field input:focus,
+.property-type-select:focus {
+  outline: none;
+  border-bottom-color: #111827;
+}
+
+.form-field input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.bedrooms-bathrooms-row,
+.property-size-row,
+.address-details-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.address-details-row {
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.submit-property-btn {
+  padding: 0.75rem 2rem;
+  margin-top: 2rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: #463cc9;
+  color: white;
+  letter-spacing: 0.025em;
+}
+
+.submit-property-btn:hover {
+  background: #000000;
+  border-color: #000000;
+}
