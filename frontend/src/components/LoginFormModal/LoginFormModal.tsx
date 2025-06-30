@@ -37,18 +37,24 @@ function LoginFormModal(): JSX.Element {
   };
 
   const demoLogin = () => {
-    setEmail("spongebob@aa.io");
-    setPassword("$2a$10$RWA3t0FVaTYW1AOKNz5La.3jZDoe0RRqfZ3GFIIrmuNxnjHS0bxu6");
+    setEmail("demo@user.io");
+    setPassword("password");
   };
 
   return (
-    <div className="modal-content">
-      <h1>Log In</h1>
+    <div className="container">
+      {/* <div className="card"> */}
+      <div className="header">
+        <h1 className="title">Real Estate Analyzer</h1>
+        <p className="subtitle">Find your perfect investment deal</p>
+      </div>
       <form className="modal-input" onSubmit={(e) => handleSubmit(e)}>
         <label>
-          Email
           <input
             type="text"
+            id="emailInput"
+            placeholder="Email or Username"
+            className="input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -56,9 +62,11 @@ function LoginFormModal(): JSX.Element {
         </label>
         {errors.email && <p>{errors.email}</p>}
         <label>
-          Password
           <input
             type="password"
+            id="passwordInput"
+            placeholder="Password"
+            className="input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -66,12 +74,13 @@ function LoginFormModal(): JSX.Element {
         </label>
         {errors.password && <p>{errors.password}</p>}
         <button className="login-button" type="submit">
-          Log In
+          Sign In
         </button>
         <div className="demo-login-button" onClick={demoLogin}>
           Demo Login
         </div>
       </form>
+      {/* </div> */}
     </div>
   );
 }
