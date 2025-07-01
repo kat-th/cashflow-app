@@ -4,7 +4,6 @@ import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
 import "./SignupForm.css";
 
-
 interface ISignUpErrors {
   server?: any;
   email?: string;
@@ -14,7 +13,6 @@ interface ISignUpErrors {
   password?: string;
   confirmPassword?: string;
 }
-
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -31,7 +29,7 @@ function SignupFormModal() {
     lastName: "",
     username: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const { closeModal } = useModal();
 
@@ -63,13 +61,17 @@ function SignupFormModal() {
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
+    <div className="signup-container">
+      <div className="header">
+        <h2 className="title">Cash Flow</h2>
+        <p className="subtitle">Find your perfect investment deal</p>
+      </div>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="signup-inputs">
         <label>
-          Email
           <input
+            className="input"
+            placeholder="Email"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -78,8 +80,9 @@ function SignupFormModal() {
         </label>
         {errors.email && <p>{errors.email}</p>}
         <label>
-          First Name
           <input
+            className="input"
+            placeholder="First Name"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -88,8 +91,9 @@ function SignupFormModal() {
         </label>
         {errors.firstName && <p>{errors.firstName}</p>}
         <label>
-          Last Name
           <input
+            className="input"
+            placeholder="Last Name"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -98,8 +102,9 @@ function SignupFormModal() {
         </label>
         {errors.lastName && <p>{errors.lastName}</p>}
         <label>
-          Username
           <input
+            className="input"
+            placeholder="Username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -108,8 +113,9 @@ function SignupFormModal() {
         </label>
         {errors.username && <p>{errors.username}</p>}
         <label>
-          Password
           <input
+            className="input"
+            placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -118,8 +124,9 @@ function SignupFormModal() {
         </label>
         {errors.password && <p>{errors.password}</p>}
         <label>
-          Confirm Password
           <input
+            className="input"
+            placeholder="Confirm Password"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -127,9 +134,11 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button className="signup-button" type="submit">
+          Sign Up
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 

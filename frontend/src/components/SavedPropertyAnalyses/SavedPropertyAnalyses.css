@@ -1,1 +1,36 @@
+.analysis-container {
+  margin: 2rem;
+}
 
+.page-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: rgb(56, 54, 54);
+}
+
+.new-analysis-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.new-analysis-button:hover {
+  background-color: #1d4ed8;
+}

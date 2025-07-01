@@ -48,7 +48,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          address: "175 Somerset Ave, Winthrop, MA 02152",
+          address: "175 Somerset Ave",
           city: "Winthrop",
           state: "MA",
           zipcode: "02152",
@@ -99,7 +99,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          address: "7 Meridian Pkwy, Malden, MA 02148",
+          address: "7 Meridian Pkwy",
           city: "Malden",
           state: "MA",
           zipcode: "02148",

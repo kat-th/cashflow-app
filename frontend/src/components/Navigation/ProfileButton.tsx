@@ -7,6 +7,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useAppSelector } from "../../redux/store";
 import { NavLink } from "react-router-dom";
+import { LogIn, UserPlus } from "lucide-react";
 
 function ProfileButton(): JSX.Element {
   const dispatch = useDispatch();
@@ -62,11 +63,13 @@ function ProfileButton(): JSX.Element {
           ) : (
             <>
               <OpenModalMenuItem
+                icon={<LogIn size={16} />}
                 itemText="Log In"
                 onItemClick={closeMenu}
                 modalComponent={<LoginFormModal />}
               />
               <OpenModalMenuItem
+                icon={<UserPlus size={16} />}
                 itemText="Sign Up"
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}

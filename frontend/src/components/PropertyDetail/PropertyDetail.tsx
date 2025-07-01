@@ -150,32 +150,6 @@ const propertyDetailPage: React.FC = () => {
           </div>
 
           {/* <hr className="separator" /> */}
-          {/* <div className="property-description-card">
-            <h2 className="description-title">Property Description</h2>
-            <p className="description-text">{property.description}</p>
-            <div className="property-type-tag">
-              <span className="property-type-badge">
-                {property.propertyType}
-              </span>
-              <span className="property-type-badge">
-                {getReturnColorClass(
-                  property.investmentAnalysis.cashOnCashReturn
-                )}
-              </span>
-              <span className="property-type-badge">
-                {getCashFlowColorClass(
-                  property.investmentAnalysis.cashOnCashReturn
-                )}
-              </span>
-              <span className="property-type-badge">
-                {getStrategyColorClass(
-                  property.investmentAnalysis.cashOnCashReturn
-                )}
-              </span>
-            </div>
-          </div> */}
-
-          {/* <hr className="separator" /> */}
         </div>
 
         <div className="analysis-section">

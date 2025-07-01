@@ -42,7 +42,7 @@ const SavedPropertyAnalyses = () => {
   // };
 
   return (
-    <div>
+    <div className="analysis-container">
       <div>
         {/* Header */}
         <div className="page-header">
@@ -51,8 +51,8 @@ const SavedPropertyAnalyses = () => {
             <p>Manage and reivew your real estate investment analyses</p>
           </div>
 
-          <button className="add-new-icon">
-            <Plus />
+          <button className="new-analysis-button">
+            <Plus size={16} />
             New Analysis
           </button>
         </div>

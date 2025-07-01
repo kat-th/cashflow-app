@@ -164,17 +164,21 @@ const ViewAllProperties: React.FC = () => {
                           %
                         </div>
                         {isLoggedIn && (
-                          <div className="update-delete-icon">
+                          <div className="action-buttons">
                             <button
                               onClick={(e) =>
                                 handleUpdateProperty(property.id, e)
                               }
+                              className="update-button"
                             >
-                              <Edit />
+                              <Edit size={16} />
                             </button>
-                            <div onClick={handleDeleteClick}>
+                            <div
+                              onClick={handleDeleteClick}
+                              className="delete-button"
+                            >
                               <OpenModalButton
-                                icon={<Trash2 />}
+                                icon={<Trash2 size={16} />}
                                 onModalClose={null}
                                 modalComponent={
                                   <DeleteModal propertyId={property.id} />
