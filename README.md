@@ -12,7 +12,7 @@
 
 -   User Authentication
 -   Create / Read / Update / Delete PROEPRTY 
--   Create / Read / Delete ANALYSIS
+-   Create / Read / Update / Delete ANALYSIS
 -   Modify investment calculation to fit personal strategy and save analysis in user's profile
 -   Generate instant, actionable investment recommendation using user's inputs
 
