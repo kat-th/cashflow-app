@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 import { AnyAction } from "redux";
-
 interface IErrors {
   email: string;
   password: string;
@@ -45,10 +44,10 @@ function LoginFormModal(): JSX.Element {
     <div className="container">
       {/* <div className="card"> */}
       <div className="header">
-        <h1 className="title">Real Estate Analyzer</h1>
+        <h2 className="title">Cash Flow</h2>
         <p className="subtitle">Find your perfect investment deal</p>
       </div>
-      <form className="modal-input" onSubmit={(e) => handleSubmit(e)}>
+      <form className="login-inputs" onSubmit={(e) => handleSubmit(e)}>
         <label>
           <input
             type="text"
@@ -77,7 +76,7 @@ function LoginFormModal(): JSX.Element {
           Sign In
         </button>
         <div className="demo-login-button" onClick={demoLogin}>
-          Demo Login
+          Admin Login
         </div>
       </form>
       {/* </div> */}

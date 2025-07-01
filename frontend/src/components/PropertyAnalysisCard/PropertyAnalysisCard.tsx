@@ -19,16 +19,16 @@ import "./PropertyAnalysisCard.css";
 
 interface PropertyAnalysisCardProps {
   analysis: IPropertyAnalysis;
-  //   onDelete: (id: number) => void;
 }
 
 const PropertyAnalysisCard: React.FC<PropertyAnalysisCardProps> = ({
   analysis,
-  //   onDelete,
 }) => {
   const dispatch = useDispatch();
   const currentUser = useAppSelector((state) => state.session.user);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // console.log("THIS IS THE USER SAVED ANALYSES", analysis.createdAt);
 
   const propertyTypeIcon = {
     single_family: Home,
@@ -42,50 +42,59 @@ const PropertyAnalysisCard: React.FC<PropertyAnalysisCardProps> = ({
           <div>
             <div className="icon"></div>
           </div>
-          <div className="analysis-section">
+          <div className="property-info">
             <h3>{analysis.address}</h3>
-            <p>
+            <p className="property-city">
               {analysis.city}, {analysis.state}
               {/* , {analysis.zipcode} */}
             </p>
-            <p>{analysis.propertyType}</p>
+            <p className="property-type">{analysis.propertyType}</p>
           </div>
         </div>
 
         {/* Action button */}
         <div className="action-buttons">
-          <button>
-            <Edit />
+          <button className="update-button">
+            <Edit size={16} />
           </button>
-          <OpenModalButton
-            icon={<Trash2 />}
-            onModalClose={null}
-            modalComponent={
-              <DeleteAnalysisModal analysisId={analysis.id as number} />
-            }
-          />
+          <div className="delete-button">
+            <OpenModalButton
+              icon={<Trash2 size={16} />}
+              onModalClose={null}
+              modalComponent={
+                <DeleteAnalysisModal analysisId={analysis.id as number} />
+              }
+            />
+          </div>
         </div>
       </div>
 
       {/* Financial Metrics */}
-      <div className="">
+      <div className="card-content">
         <div className="financial-grid">
-          <div className="financial-item">
-            <p>Purchase Price</p>
-            <p>{analysis.purchasePrice}</p>
+          <div className="financial-metric">
+            <p className="metric-label">Purchase Price</p>
+            <p className="metric-value">
+              ${analysis.purchasePrice.toLocaleString()}
+            </p>
           </div>
-          <div className="financial-item">
-            <p>Monthly Rent</p>
-            <p>{analysis.rentZestimate}</p>
+          <div className="financial-metric">
+            <p className="metric-label">Monthly Rent</p>
+            <p className="metric-value">
+              ${analysis.rentZestimate.toLocaleString()}
+            </p>
           </div>
 
-          <div className="financial-item">
-            <p>Cash Flow</p>
-            <p>{analysis.monthlyCashFlow}</p>
+          <div className="financial-kpi">
+            <p className="kpi-label">Cash Flow</p>
+            <p className="kpi-value">
+              {" "}
+              ${analysis.monthlyCashFlow.toLocaleString()}
+            </p>
           </div>
-          <div className="financial-item">
-            <p>Cap Rate</p>
-            <p>{analysis.capRate}</p>
+          <div className="financial-kpi">
+            <p className="kpi-label">Cap Rate</p>
+            <p className="kpi-value">{analysis.capRate}%</p>
           </div>
         </div>
 
@@ -93,11 +102,19 @@ const PropertyAnalysisCard: React.FC<PropertyAnalysisCardProps> = ({
         <div className="investment-rules">
           {/* <div> */}
           <div className="rule-one-pct">
-            {analysis.onePercentRule ? <CheckCircle /> : <XCircle />}
+            {analysis.onePercentRule ? (
+              <CheckCircle className="check-icon" />
+            ) : (
+              <XCircle className="x-icon" />
+            )}
             <span className="rule-label">1% Rule</span>
           </div>
           <div className="rule-two-pct">
-            {analysis.twoPercentRule ? <CheckCircle /> : <XCircle />}
+            {analysis.twoPercentRule ? (
+              <CheckCircle className="check-icon" />
+            ) : (
+              <XCircle className="x-icon" />
+            )}
             <span className="rule-label">2% Rule</span>
           </div>
           {/* </div> */}

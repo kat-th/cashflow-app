@@ -134,10 +134,24 @@ body {
   display: inline-block;
 }
 
-.update-delete-icon {
+.action-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 4px;
+}
+
+.update-button {
+  border: none;
+  background: none;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+.delete-button button {
+  border: none;
+  background: none;
+  color: #dc2626;
+  cursor: pointer;
 }
 /* Responsive adjustments */
 @media (max-width: 768px) {

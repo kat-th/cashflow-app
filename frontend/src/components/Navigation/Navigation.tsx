@@ -22,9 +22,14 @@ function Navigation(): JSX.Element {
 
         <div className="navbar-right">
           {user && (
-            <NavLink to="/property/create-property" className="create-link">
-              Create New Property
-            </NavLink>
+            <div className="nav-button-group">
+              <NavLink to="/property/create-property" className="nav-button">
+                Add Property
+              </NavLink>
+              <NavLink to="/investment" className="nav-button">
+                Investment Profile
+              </NavLink>
+            </div>
           )}
           <div>
             <ProfileButton />

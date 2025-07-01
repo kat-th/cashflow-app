@@ -160,7 +160,7 @@ const InvestmentCalculator: React.FC<IPropertyProps> = ({
                 analysis.annualCashFlow || 0
               )}`}
             >
-              ${analysis.annualCashFlow?.toFixed(0)}
+              ${analysis.monthlyCashFlow?.toFixed(0) * 12}
             </span>
           </div>
         </div>
