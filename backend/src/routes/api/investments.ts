@@ -5,7 +5,10 @@ import { handleValidationErrors } from "../../utils/validation";
 import { investmentCalculator } from "../../utils/investmentCalculator";
 const { check } = require("express-validator");
 const bcrypt = require("bcryptjs");
-import { IPropertyAnalysis } from "../../typings/data";
+import {
+  IPropertyAnalysis,
+  IInvestmentAnalysisResult,
+} from "../../typings/data";
 
 const { Op } = require("sequelize");
 
@@ -15,72 +18,114 @@ import {
   AnalysisInputs,
   CreateAnalysisBody,
 } from "../../typings/data";
-import { NoResourceError } from "../../errors/customErrors";
-import { NextIndex } from "aws-sdk/clients/lexmodelsv2";
 
 const { User, MarketProperty, InvestmentAnalysis, sequelize } = db;
 
 const router = require("express").Router();
 
 // Create / calculate investment analysis
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { propertyId } = req.params;
-    const { inputs }: CreateAnalysisBody = req.body;
+// router.post("/", async (req: AuthReq, res: Response, next: NextFunction) => {
+//   try {
+//     const inputs = req.body;
 
-    // Validate property exists
-    const property = await MarketProperty.findByPk(parseInt(propertyId));
-    if (!property) {
-      return res.status(404).json({ error: "Property not found" });
-    }
+//     // Validate inputs
+//     if (!inputs || typeof inputs !== "object") {
+//       return res.status(400).json({ error: "Invalid analysis inputs" });
+//     }
 
-    // Validate inputs
-    if (!inputs || typeof inputs !== "object") {
-      return res.status(400).json({ error: "Invalid analysis inputs" });
-    }
+//     const requiredFields = [
+//       "purchasePrice",
+//       "monthlyRent",
+//       "downPayment",
+//       "interestRate",
+//       "loanTerm",
+//       "insurance",
+//       "maintenance",
+//       "vacancy",
+//       "propertyTaxRate",
+//       "propertyManagement",
+//     ];
 
-    const requiredFields = [
-      "downPayment",
-      "interestRate",
-      "loanTerm",
-      "propertyTaxRate",
-      "insurance",
-      "maintenance",
-      "vacancy",
-      "propertyManagement",
-    ];
+//     for (const field of requiredFields) {
+//       if (
+//         !(field in inputs) ||
+//         typeof inputs[field as keyof AnalysisInputs] !== "number"
+//       ) {
+//         return res
+//           .status(400)
+//           .json({ error: `Invalid or missing field: ${field}` });
+//       }
+//     }
 
-    for (const field of requiredFields) {
-      if (
-        !(field in inputs) ||
-        typeof inputs[field as keyof AnalysisInputs] !== "number"
-      ) {
-        return res
-          .status(400)
-          .json({ error: `Invalid or missing field: ${field}` });
-      }
-    }
+//     let property = null;
+//     let purchasePrice = inputs.purchasePrice;
+//     let monthlyRent = inputs.monthlyRent;
 
-    // Calculate investment metrics
-    const analysisResults = investmentCalculator(property, inputs);
+//     // If propertyId is provided, try to link to existing property
+//     if (inputs.address) {
+//       // Search for property by address (case-insensitive, partial match)
+//       property = await MarketProperty.findOne({
+//         where: {
+//           address: {
+//             [Op.iLike]: `%${inputs.address.trim()}%`, // PostgreSQL case-insensitive search
+//           },
+//         },
+//       });
+//     }
 
-    res.status(200).json({
-      message: "Analysis calculated successfully",
-      property: {
-        id: property.id,
-        address: property.address,
-        city: property.city,
-        state: property.state,
-        listPrice: property.listPrice,
-        rentZestimate: property.rentZestimate,
-      },
-      inputs,
-      analysis: analysisResults,
-    });
-  } catch (error) {
-    return next(error);
-  }
-});
+//     // Ensure we have required values (already validated above, but double-check)
+//     if (!purchasePrice || !monthlyRent) {
+//       return res.status(400).json({
+//         error: "purchasePrice and monthlyRent are required",
+//       });
+//     }
+
+//     const analysisInputs = {
+//       ...inputs,
+//       purchasePrice,
+//       monthlyRent,
+//     };
+
+//     // Calculate investment metrics
+//     const analysisResults = investmentCalculator(property, analysisInputs);
+
+//     // Create new investment analysis record in database
+//     const savedAnalysis = await InvestmentAnalysis.create({
+//       userId: req.user.id,
+//       propertyId: property ? property.id : null,
+//       downPayment: inputs.downPayment,
+//       interestRate: inputs.interestRate,
+//       loanTerm: inputs.loanTerm,
+//       insurance: inputs.insurance,
+//       maintenance: inputs.maintenance,
+//       vacancy: inputs.vacancy,
+//       propertyTaxRate: inputs.propertyTaxRate,
+//       propertyManagement: inputs.propertyManagement,
+//       monthlyRent: monthlyRent,
+//       purchasePrice: purchasePrice,
+//       totalMonthlyExpenses: analysisResults.totalMonthlyExpenses,
+//       monthlyCashFlow: analysisResults.monthlyCashFlow,
+//       cashOnCashReturn: analysisResults.cashOnCashReturn,
+//       netOperatingIncome: analysisResults.netOperatingIncome,
+//       capRate: analysisResults.capRate,
+//       onePercentRule: analysisResults.onePercentRule,
+//       twoPercentRule: analysisResults.twoPercentRule,
+//       strategy: analysisResults.strategy,
+//       strategyReason: analysisResults.strategyReason,
+//     });
+
+//     const responseData: any = {
+//       message: "Analysis created successfully",
+//       inputs: analysisInputs,
+//       analysis: savedAnalysis.toJSON(),
+//       propertyFound: !!property,
+//     };
+
+//     res.status(200).json(responseData);
+//   } catch (error) {
+//     return next(error);
+//   }
+// });
 
 //Get saved analyses
 
@@ -101,9 +146,9 @@ router.get(
               "city",
               "state",
               "zipcode",
-              "rentZestimate",
               "propertyType",
               "listPrice",
+              "rentZestimate",
             ],
           },
         ],
@@ -115,12 +160,24 @@ router.get(
         address: analysis.MarketProperty?.address,
         city: analysis.MarketProperty?.city,
         state: analysis.MarketProperty?.state,
+        downPayment: analysis.downPayment,
+        interestRate: analysis.interestRate,
+        loanTerm: analysis.loanTerm,
+        insurance: analysis.insurance,
+        maintenance: analysis.maintenance,
+        vacancy: analysis.vacancy,
+        propertyTaxRate: analysis.propertyTaxRate,
+        propertyManagement: analysis.propertyManagement,
         propertyType: analysis.MarketProperty?.propertyType,
-        purchasePrice: analysis.MarketProperty?.listPrice,
-        rentZestimate: analysis.MarketProperty?.rentZestimate,
+        purchasePrice:
+          analysis.purchasePrice || analysis.MarketProperty?.listPrice, //need to add user's purchase price
+        monthlyRent:
+          analysis.monthlyRent || analysis.MarketProperty?.rentZestimate,
+        totalMonthlyExpenses: analysis.totalMonthlyExpenses,
         monthlyCashFlow: analysis.monthlyCashFlow,
-        capRate: analysis.capRate,
         cashOnCashReturn: analysis.cashOnCashReturn,
+        netOperatingIncome: analysis.netOperatingIncome,
+        capRate: analysis.capRate,
         onePercentRule: analysis.onePercentRule,
         twoPercentRule: analysis.twoPercentRule,
         createdAt: analysis.createdAt,
@@ -151,6 +208,7 @@ router.put(
       maintenance,
       vacancy,
       propertyManagement,
+      purchasePrice,
       monthlyRent,
       totalMonthlyExpenses,
       monthlyCashFlow,
@@ -184,6 +242,7 @@ router.put(
       maintenance: maintenance,
       vacancy: vacancy,
       propertyManagement: propertyManagement,
+      purchasePrice: purchasePrice,
       monthlyRent: monthlyRent,
       totalMonthlyExpenses: totalMonthlyExpenses,
       monthlyCashFlow: monthlyCashFlow,

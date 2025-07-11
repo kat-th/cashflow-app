@@ -19,7 +19,7 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  padding-left: 16px;
+  padding: 16px 24px;
 }
 
 .modal-header {
@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 2px 8px;
+  /* margin: 2px 8px; */
 }
 
 .close-button {
@@ -45,25 +45,24 @@
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  /* gap: 32px; */
   /* margin-bottom: 24px; */
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
+  padding: 0 18px;
 }
 
 .form-field label {
   display: block;
   font-size: 14px;
   color: #374151;
-  margin-bottom: 4px;
 }
 
 .form-field input {
-  width: 90%;
-  padding: 8px 0 8px 6px;
+  width: 80%;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 14px;
@@ -107,9 +106,36 @@
 .analysis-result {
   border-top: 1px solid #e5e7eb;
   padding-top: 16px;
+  font-size: 0.95rem;
+}
+
+.analysis-result h3 {
+  font-size: 1.2rem;
 }
 
 .result-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metric-card {
+  background-color: white;
+  padding: 16px;
+  border-radius: 6px;
+  background-color: #f6f8fc;
+}
+
+.text-green {
+  color: #1ca24d;
+}
+
+.text-red {
+  color: #ef4444;
+}
+
+.strategy-reason {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
 }

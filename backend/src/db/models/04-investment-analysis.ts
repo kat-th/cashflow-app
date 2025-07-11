@@ -20,6 +20,7 @@ type InvestmentAnalysisAttributes = {
   maintenance: number;
   vacancy: number;
   propertyManagement: number;
+  purchasePrice: number;
   monthlyRent: number;
   totalMonthlyExpenses: number;
   monthlyCashFlow: number;
@@ -28,15 +29,8 @@ type InvestmentAnalysisAttributes = {
   capRate: number;
   onePercentRule: boolean;
   twoPercentRule: boolean;
-  // annualCashFlow: number;
   strategy: string;
   strategyReason: string;
-  // monthlyMortgage: number;
-  // monthlyPropertyTax: number;
-  // monthlyInsurance: number;
-  // monthlyMaintenance: number;
-  // monthlyVacancy: number;
-  // monthlyPropMgmt: number;
 };
 
 type InvestmentAnalysisCreationAttributes = Optional<
@@ -60,23 +54,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
     declare maintenance: number;
     declare vacancy: number;
     declare propertyManagement: number;
+    declare purchasePrice: number;
     declare monthlyRent: number;
     declare totalMonthlyExpenses: number;
     declare monthlyCashFlow: number;
     declare cashOnCashReturn: number;
-    // declare annualCashFlow: number;
     declare netOperatingIncome: number;
     declare capRate: number;
     declare onePercentRule: boolean;
     declare twoPercentRule: boolean;
     declare strategy: string;
     declare strategyReason: string;
-    // declare monthlyMortgage: number;
-    // declare monthlyPropertyTax: number;
-    // declare monthlyInsurance: number;
-    // declare monthlyMaintenance: number;
-    // declare monthlyVacancy: number;
-    // declare monthlyPropMgmt: number;
 
     async getAnalysis() {
       const analysis = {
@@ -91,23 +79,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
         maintenance: this.maintenance,
         vacancy: this.vacancy,
         propertyManagement: this.propertyManagement,
+        purchasePrice: this.purchasePrice,
         monthlyRent: this.monthlyRent,
         totalMonthlyExpenses: this.totalMonthlyExpenses,
         monthlyCashFlow: this.monthlyCashFlow,
         cashOnCashReturn: this.cashOnCashReturn,
-        // annualCashFlow: this.annualCashFlow,
         netOperatingIncome: this.netOperatingIncome,
         capRate: this.capRate,
         onePercentRule: this.onePercentRule,
         twoPercentRule: this.twoPercentRule,
         strategy: this.strategy,
         strategyReason: this.strategyReason,
-        // monthlyMortgage: this.monthlyMortgage,
-        // monthlyPropertyTax: this.monthlyPropertyTax,
-        // monthlyInsurance: this.monthlyInsurance,
-        // monthlyMaintenance: this.monthlyMaintenance,
-        // monthlyVacancy: this.monthlyVacancy,
-        // monthlyPropMgmt: this.monthlyPropMgmt,
       };
       return analysis;
     }
@@ -121,7 +103,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
         foreignKey: "userId",
       });
     }
-    // declare public static associations: { [key: string]: Association<Model<any, any>, Model<any, any>>; };
   }
   InvestmentAnalysis.init(
     {
@@ -136,80 +117,79 @@ module.exports = (sequelize: any, DataTypes: any) => {
       },
       propertyId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
       downPayment: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       interestRate: {
-        type: DataTypes.DECIMAL(5, 2),
+        type: DataTypes.NUMERIC,
         allowNull: false,
-        validate: {
-          len: [60, 60],
-        },
       },
       loanTerm: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
         validate: {
           isGoodValue(value: number) {
-            if (value < 5 || value > 20) {
+            if (value < 5 || value > 30) {
               throw new Error("Loan term must be between 5 and 30");
             }
           },
         },
       },
       propertyTaxRate: {
-        type: DataTypes.DECIMAL(5, 2),
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       insurance: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       maintenance: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       vacancy: {
-        type: DataTypes.DECIMAL(5, 2),
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       propertyManagement: {
-        type: DataTypes.DECIMAL(5, 2),
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
+      purchasePrice: {
+        type: DataTypes.NUMERIC,
+      },
       monthlyRent: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       monthlyCashFlow: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       cashOnCashReturn: {
-        type: DataTypes.DECIMAL(5, 2),
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       totalMonthlyExpenses: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         allowNull: false,
       },
       strategy: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       strategyReason: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       netOperatingIncome: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.NUMERIC,
         // allowNull: false,
       },
       capRate: {
-        type: DataTypes.DECIMAL(5, 2),
+        type: DataTypes.NUMERIC,
         // allowNull: false,
       },
       onePercentRule: {

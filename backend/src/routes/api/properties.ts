@@ -16,7 +16,14 @@ import {
 } from "../../typings/data";
 import { NoResourceError } from "../../errors/customErrors";
 
-const { User, UserImage, MarketProperty, PropertyImage, sequelize } = db;
+const {
+  User,
+  UserImage,
+  MarketProperty,
+  PropertyImage,
+  InvestmentAnalysis,
+  sequelize,
+} = db;
 
 const router = require("express").Router();
 
@@ -60,6 +67,8 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
         const images = propertyData.images || [];
         try {
           const defaultInputs = {
+            purchasePrice: propertyData.listPrice,
+            monthlyRent: propertyData.rentZestimate,
             downPayment: 20,
             interestRate: 7.5,
             loanTerm: 30,
@@ -138,13 +147,15 @@ router.get(
       const previewImage = images.find((img: any) => img.preview === true);
       try {
         const defaultInputs = {
+          purchasePrice: propertyData.listPrice,
+          monthlyRent: propertyData.rentZestimate,
           downPayment: 20,
           interestRate: 7.5,
           loanTerm: 30,
-          propertyTaxRate: 1.2,
           insurance: 1200,
           maintenance: 1,
           vacancy: 5,
+          propertyTaxRate: 1.2,
           propertyManagement: 8,
         };
 
@@ -188,63 +199,173 @@ router.get(
   }
 );
 
-// Create analysis for a property
-// Create / calculate investment analysis
+// // Create analysis for a property
+// router.post(
+//   "/:propertyId/investment/calculate",
+//   async (req: AuthReq, res: Response, next: NextFunction) => {
+//     try {
+//       const { propertyId } = req.params;
+//       const { inputs } = req.body;
+
+//       if (!inputs || typeof inputs !== "object") {
+//         return res.status(400).json({ error: "Invalid analysis inputs" });
+//       }
+
+//       // Get property
+//       let property = null;
+//       if (propertyId) {
+//         property = await MarketProperty.findByPk(parseInt(propertyId));
+//         if (!property) {
+//           return res.status(404).json({ error: "Property not found" });
+//         }
+//       }
+
+//       // Calculate investment metrics (DON'T save to database)
+//       const analysisResults = investmentCalculator(property, inputs);
+
+//       // Return only the calculation results
+//       res.status(200).json({
+//         message: "Analysis calculated successfully",
+//         analysis: analysisResults,
+//         inputs,
+//       });
+//     } catch (error) {
+//       return next(error);
+//     }
+//   }
+// );
+
+// Create / calculate investment analysis from property page
 router.post(
   "/:propertyId/investment",
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: AuthReq, res: Response, next: NextFunction) => {
     try {
       const { propertyId } = req.params;
-      const { inputs }: CreateAnalysisBody = req.body;
+      const {
+        purchasePrice,
+        monthlyRent,
+        downPayment,
+        interestRate,
+        loanTerm,
+        propertyTaxRate,
+        insurance,
+        maintenance,
+        vacancy,
+        propertyManagement,
+      } = req.body;
+
+      // ADD DEBUG IMMEDIATELY - before any validation
+      // console.log("=== RAW REQUEST DEBUG ===");
+      // console.log("req.body:", req.body);
+      // console.log("req.body type:", typeof req.body);
+      // console.log("req.body stringified:", JSON.stringify(req.body));
+
+      // const inputs = req.body;
+
+      // Validate inputs - ADD DETAILED ERROR RESPONSE
+      // if (!inputs || typeof inputs !== "object") {
+      //   const errorDetails = {
+      //     error: "Invalid analysis inputs",
+      //     received: inputs,
+      //     type: typeof inputs,
+      //     isNull: inputs === null,
+      //     isUndefined: inputs === undefined,
+      //     stringified: JSON.stringify(inputs),
+      //   };
+
+      //   console.log("❌ Validation failed:", errorDetails);
+      //   return res.status(400).json(errorDetails);
+      // }
+
+      // // Validate inputs
+      // if (!inputs || typeof inputs !== "object") {
+      //   return res.status(400).json({ error: "Invalid analysis inputs" });
+      // }
+
+      // const requiredFields = [
+      //   "purchasePrice",
+      //   "monthlyRent",
+      //   "downPayment",
+      //   "interestRate",
+      //   "loanTerm",
+      //   "propertyTaxRate",
+      //   "insurance",
+      //   "maintenance",
+      //   "vacancy",
+      //   "propertyManagement",
+      // ];
+
+      // for (const field of requiredFields) {
+      //   if (
+      //     !(field in inputs) ||
+      //     typeof inputs[field as keyof AnalysisInputs] !== "number"
+      //   ) {
+      //     return res
+      //       .status(400)
+      //       .json({ error: `Invalid or missing field: ${field}` });
+      //   }
+      // }
+
+      // let property = null;
+      // let purchasePrice = inputs.purchasePrice;
+      // let monthlyRent = inputs.monthlyRent;
 
       // Validate property exists
+      // if (propertyId) {
+      //   let property = await MarketProperty.findByPk(parseInt(propertyId));
+      //   if (!property) {
+      //     return res.status(404).json({ error: "Property not found" });
+      //   }
+
+      //   if (!purchasePrice) {
+      //     purchasePrice = property.listPrice;
+      //   }
+      //   if (!monthlyRent) {
+      //     monthlyRent = property.rentZestimate;
+      //   }
+      // } else {
+      //   // If no propertyId, purchasePrice and rentEstimate are required
+      //   if (!purchasePrice || !monthlyRent) {
+      //     return res.status(400).json({
+      //       error:
+      //         "purchasePrice and monthlyRent are required when propertyId is not provided",
+      //     });
+      //   }
+      // }
+
       const property = await MarketProperty.findByPk(parseInt(propertyId));
-      if (!property) {
-        return res.status(404).json({ error: "Property not found" });
-      }
 
-      // Validate inputs
-      if (!inputs || typeof inputs !== "object") {
-        return res.status(400).json({ error: "Invalid analysis inputs" });
-      }
-
-      const requiredFields = [
-        "downPayment",
-        "interestRate",
-        "loanTerm",
-        "propertyTaxRate",
-        "insurance",
-        "maintenance",
-        "vacancy",
-        "propertyManagement",
-      ];
-
-      for (const field of requiredFields) {
-        if (
-          !(field in inputs) ||
-          typeof inputs[field as keyof AnalysisInputs] !== "number"
-        ) {
-          return res
-            .status(400)
-            .json({ error: `Invalid or missing field: ${field}` });
-        }
-      }
+      const analysisInputs = req.body;
 
       // Calculate investment metrics
-      const analysisResults = investmentCalculator(property, inputs);
+      const analysisResults = investmentCalculator(property, analysisInputs);
+
+      const savedAnalysis = await InvestmentAnalysis.create({
+        userId: req.user.id,
+        propertyId: propertyId ? parseInt(propertyId) : null,
+        downPayment,
+        interestRate,
+        loanTerm,
+        insurance,
+        maintenance,
+        vacancy,
+        propertyTaxRate,
+        propertyManagement,
+        purchasePrice,
+        monthlyRent,
+        totalMonthlyExpenses: analysisResults.totalMonthlyExpenses,
+        monthlyCashFlow: analysisResults.monthlyCashFlow,
+        cashOnCashReturn: analysisResults.cashOnCashReturn,
+        netOperatingIncome: analysisResults.netOperatingIncome,
+        capRate: analysisResults.capRate,
+        onePercentRule: analysisResults.onePercentRule,
+        twoPercentRule: analysisResults.twoPercentRule,
+        strategy: analysisResults.strategy,
+        strategyReason: analysisResults.strategyReason,
+      });
 
       res.status(200).json({
-        message: "Analysis calculated successfully",
-        property: {
-          id: property.id,
-          address: property.address,
-          city: property.city,
-          state: property.state,
-          listPrice: property.listPrice,
-          rentZestimate: property.rentZestimate,
-        },
-        inputs,
-        analysis: analysisResults,
+        savedAnalysis,
       });
     } catch (error) {
       return next(error);
@@ -267,6 +388,8 @@ router.get(
 
       // Return default calculation
       const defaultInputs: AnalysisInputs = {
+        purchasePrice: property.listPrice,
+        monthlyRent: property.rentZestimate,
         downPayment: 20,
         interestRate: 7.5,
         loanTerm: 30,

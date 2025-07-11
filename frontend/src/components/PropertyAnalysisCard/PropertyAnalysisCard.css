@@ -1,7 +1,6 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, sans-serif;
-  /* background-color: #f3f4f6; */
 }
 
 .analysis-card {
@@ -9,7 +8,7 @@ body {
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   overflow: hidden;
-  max-width: 800px;
+  max-width: 1200px;
   margin-bottom: 2rem;
 }
 
@@ -52,7 +51,7 @@ body {
 
 .financial-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
   margin-bottom: 16px;
 }

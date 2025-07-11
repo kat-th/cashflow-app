@@ -58,31 +58,6 @@ const propertyDetailPage: React.FC = () => {
     return <div>Property not found</div>;
   }
 
-  const getReturnColorClass = (returnValue: number): string => {
-    if (returnValue >= 8) return "return-excellent";
-    if (returnValue >= 4) return "return-good";
-    return "return-poor";
-  };
-
-  const getCashFlowColorClass = (cashFlow: number): string => {
-    return cashFlow >= 0 ? "cash-flow-positive" : "cash-flow-negative";
-  };
-
-  const getStrategyColorClass = (strategy: string): string => {
-    switch (strategy) {
-      case "Strong Buy":
-        return "strategy-strong-buy";
-      case "Buy":
-        return "strategy-buy";
-      case "Consider":
-        return "strategy-consider";
-      case "Hold":
-        return "strategy-hold";
-      default:
-        return "strategy-avoid";
-    }
-  };
-
   return (
     <div className="property-detail-grid">
       <div className="property-content">

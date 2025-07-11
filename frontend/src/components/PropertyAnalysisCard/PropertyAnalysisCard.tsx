@@ -28,7 +28,8 @@ const PropertyAnalysisCard: React.FC<PropertyAnalysisCardProps> = ({
   const currentUser = useAppSelector((state) => state.session.user);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // console.log("THIS IS THE USER SAVED ANALYSES", analysis.createdAt);
+  // console.log("THIS IS THE USER SAVED ANALYSiS", analysis.createdAt);
+  // console.log(typeof analysis.createdAt);
 
   const propertyTypeIcon = {
     single_family: Home,
@@ -75,13 +76,19 @@ const PropertyAnalysisCard: React.FC<PropertyAnalysisCardProps> = ({
           <div className="financial-metric">
             <p className="metric-label">Purchase Price</p>
             <p className="metric-value">
-              ${analysis.purchasePrice.toLocaleString()}
+              ${Number(analysis.purchasePrice).toLocaleString()}
+            </p>
+          </div>
+          <div className="financial-metric">
+            <p className="metric-label">Monthly Expenses</p>
+            <p className="metric-value">
+              ${Number(analysis.totalMonthlyExpenses).toLocaleString()}
             </p>
           </div>
           <div className="financial-metric">
             <p className="metric-label">Monthly Rent</p>
             <p className="metric-value">
-              ${analysis.rentZestimate.toLocaleString()}
+              ${Number(analysis.monthlyRent).toLocaleString()}
             </p>
           </div>
 
@@ -89,8 +96,12 @@ const PropertyAnalysisCard: React.FC<PropertyAnalysisCardProps> = ({
             <p className="kpi-label">Cash Flow</p>
             <p className="kpi-value">
               {" "}
-              ${analysis.monthlyCashFlow.toLocaleString()}
+              ${Number(analysis.monthlyCashFlow).toLocaleString()}
             </p>
+          </div>
+          <div className="financial-kpi">
+            <p className="kpi-label">Cash-on-Cash Return</p>
+            <p className="kpi-value">{analysis.cashOnCashReturn}%</p>
           </div>
           <div className="financial-kpi">
             <p className="kpi-label">Cap Rate</p>

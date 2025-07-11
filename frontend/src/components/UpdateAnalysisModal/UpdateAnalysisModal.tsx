@@ -14,10 +14,10 @@ import {
   TrendingUp,
   DollarSign,
   Home,
+  RefreshCw,
   Edit3,
   Save,
   X,
-  RefreshCw,
 } from "lucide-react";
 import { thunkCreateAnalysis } from "../../redux/investment";
 import "./UpdateAnalysisModal.css";
@@ -34,9 +34,11 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [calculatedAnalysis, setCalculatedAnalysis] =
-    useState<IInvestmentCalculator | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [calculatedAnalysis, setCalculatedAnalysis] = useState<any>(null);
   const [analysisInputs, setAnalysisInputs] = useState<IAnalysisInputs>({
+    purchasePrice: property.listPrice || 0,
+    monthlyRent: property.rentZestimate || 0,
     downPayment: 20,
     interestRate: 7.0,
     loanTerm: 30,
@@ -47,18 +49,13 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
     propertyManagement: 8,
   });
 
-  // const { propertyId } = useParams<{ propretyId: string }>;
-  // const property = useAppSelector((state) =>
-  //   propertyId ? state.property.byId[Number(propertyId)] : undefined
-  // );
-
-  //Update investment analysis result based on user inputs
+  // Update investment analysis result based on user inputs
   const calculateInvestmentMetrics = (
     property: IProperty,
     inputs: IAnalysisInputs
   ) => {
-    const purchasePrice = property.listPrice;
-    const monthlyRent = property.rentZestimate;
+    const purchasePrice = inputs.purchasePrice || property.listPrice;
+    const monthlyRent = inputs.monthlyRent || property.rentZestimate;
     const downPaymentAmount = (purchasePrice * inputs.downPayment) / 100;
     const loanAmount = purchasePrice - downPaymentAmount;
 
@@ -88,6 +85,21 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
     const annualCashFlow = monthlyCashFlow * 12;
     const cashOnCashReturn = (annualCashFlow / downPaymentAmount) * 100;
 
+    const monthlyOperatingExpenses =
+      monthlyPropertyTax +
+      monthlyInsurance +
+      monthlyMaintenance +
+      monthlyVacancy +
+      monthlyPropMgmt;
+
+    // Calculate Net Operating Income (NOI) - excludes mortgage payments
+    const annualRent = monthlyRent * 12;
+    const annualOperatingExpenses = monthlyOperatingExpenses * 12;
+    const netOperatingIncome = annualRent - annualOperatingExpenses;
+
+    // Calculate Cap Rate: NOI / Purchase Price
+    const capRate = (netOperatingIncome / purchasePrice) * 100;
+
     let strategy = "Hold";
     let strategyReason = "Stable cash flow property";
 
@@ -110,6 +122,7 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
       monthlyCashFlow,
       annualCashFlow,
       cashOnCashReturn,
+      capRate,
       totalMonthlyExpenses,
       strategy,
       strategyReason,
@@ -139,8 +152,9 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
   const handleSaveAnalysis = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (newUserAnalysis && property) {
-      await dispatch(thunkCreateAnalysis(property.id, newUserAnalysis));
+    if (analysisInputs && property) {
+      // console.log("THIS IS THE INPUTS TO BE SAVVED", analysisInputs);
+      await dispatch(thunkCreateAnalysis(property.id, analysisInputs));
       setIsLoaded(!isLoaded);
       onClose();
     }
@@ -157,6 +171,34 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
         </div>
 
         <div className="form-grid">
+          <div className="form-field">
+            <label>Purchase Price</label>
+            <input
+              type="number"
+              value={analysisInputs.purchasePrice}
+              onChange={(e) =>
+                setAnalysisInputs({
+                  ...analysisInputs,
+                  purchasePrice: parseFloat(e.target.value),
+                })
+              }
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Monthly Rent</label>
+            <input
+              type="number"
+              value={analysisInputs.monthlyRent}
+              onChange={(e) =>
+                setAnalysisInputs({
+                  ...analysisInputs,
+                  monthlyRent: parseFloat(e.target.value),
+                })
+              }
+            />
+          </div>
+
           <div className="form-field">
             <label>Downpayment (%)</label>
             <input
@@ -296,14 +338,14 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
                       : "text-red"
                   }`}
                 >
-                  ${calculatedAnalysis.cashOnCashReturn.toFixed(0)}
+                  {calculatedAnalysis.cashOnCashReturn.toFixed(0)}%
                 </div>
               </div>
 
               <div className="metric-card">
                 <div>Monthly Cash Flow</div>
                 <div
-                  className={`metric-value${
+                  className={`metric-value ${
                     calculatedAnalysis.monthlyCashFlow >= 0
                       ? "text-green"
                       : "text-red"
@@ -314,22 +356,20 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
               </div>
 
               <div className="metric-card">
-                <div>Annual Cash Flow</div>
+                <div>Cap Rate</div>
                 <div
-                  className={`metric-value${
-                    calculatedAnalysis.annualCashFlow >= 0
-                      ? "text-green"
-                      : "text-red"
+                  className={`metric-value ${
+                    calculatedAnalysis.capRate >= 0 ? "text-green" : "text-red"
                   }`}
                 >
-                  ${calculatedAnalysis.annualCashFlow.toFixed(0)}
+                  {calculatedAnalysis.capRate.toFixed(1)}%
                 </div>
               </div>
 
               <div className="metric-card">
                 <div>Investment Strategy</div>
                 <div
-                  className={`metric-value${
+                  className={`metric-value ${
                     calculatedAnalysis.strategy === "Strong Buy"
                       ? "text-green"
                       : calculatedAnalysis.strategy === "Buy"
@@ -338,10 +378,10 @@ const UpdateAnalysisModal: React.FC<UpdateAnalysisModalProps> = ({
                       ? "text-yellow"
                       : calculatedAnalysis.strategy === "Hold"
                       ? "text-gray"
-                      : "text-red-600"
+                      : "text-red"
                   }`}
                 >
-                  ${calculatedAnalysis.strategy}
+                  {calculatedAnalysis.strategy}
                 </div>
               </div>
 

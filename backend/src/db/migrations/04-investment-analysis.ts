@@ -24,30 +24,29 @@ module.exports = {
         },
         propertyId: {
           type: Sequelize.INTEGER,
-          allowNull: false,
         },
         downPayment: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         interestRate: {
-          type: Sequelize.DECIMAL(5, 2),
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         loanTerm: {
           allowNull: false,
-          type: Sequelize.DECIMAL(5, 2),
+          type: Sequelize.INTEGER,
         },
         propertyTaxRate: {
-          type: Sequelize.DECIMAL(5, 2),
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         insurance: {
-          type: Sequelize.DECIMAL(10, 2),
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         maintenance: {
-          type: Sequelize.DECIMAL(10, 2),
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         vacancy: {
@@ -56,31 +55,33 @@ module.exports = {
         },
         propertyManagement: {
           allowNull: false,
-          type: Sequelize.DECIMAL(10, 2),
+          type: Sequelize.NUMERIC,
+        },
+        purchasePrice: {
+          type: Sequelize.NUMERIC,
+        },
+        monthlyRent: {
+          type: Sequelize.NUMERIC,
         },
         // Analysis result
-        monthlyRent: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
         totalMonthlyExpenses: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         monthlyCashFlow: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.NUMERIC,
           allowNull: false,
         },
         cashOnCashReturn: {
           allowNull: false,
-          type: Sequelize.DECIMAL(10, 2),
+          type: Sequelize.NUMERIC,
         },
         netOperatingIncome: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.NUMERIC,
           // allowNull: false,
         },
         capRate: {
-          type: Sequelize.DECIMAL(10, 2),
+          type: Sequelize.NUMERIC,
           // allowNull: false,
         },
         onePercentRule: {
@@ -92,11 +93,11 @@ module.exports = {
           // allowNull: false,
         },
         strategy: {
-          type: Sequelize.STRING(50),
+          type: Sequelize.STRING(100),
           allowNull: false,
         },
         strategyReason: {
-          type: Sequelize.STRING(100),
+          type: Sequelize.STRING(500),
           allowNull: false,
         },
         createdAt: {

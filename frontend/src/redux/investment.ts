@@ -70,6 +70,7 @@ export const thunkGetSavedAnalyses = (): any => async (dispatch: any) => {
     if (response.ok) {
       const data = await response.json();
       dispatch(getSavedAnalysesAction(data.userAnalyses));
+      console.log("THIS IS THE ANALYSES", data.userAnalyses);
     } else {
       throw response;
     }
@@ -82,7 +83,7 @@ export const thunkGetSavedAnalyses = (): any => async (dispatch: any) => {
 
 // Calculate custom analysis
 export const thunkCreateAnalysis =
-  (propertyId: number, analysisInputs: IAnalysisResults): any =>
+  (propertyId: number, analysisInputs: IAnalysisInputs): any =>
   async (dispatch: any) => {
     try {
       const response = await csrfFetch(
@@ -90,7 +91,7 @@ export const thunkCreateAnalysis =
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ analysisInputs }),
+          body: JSON.stringify(analysisInputs),
         }
       );
       if (response.ok) {

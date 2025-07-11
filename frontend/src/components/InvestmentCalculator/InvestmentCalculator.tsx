@@ -77,27 +77,27 @@ const InvestmentCalculator: React.FC<IPropertyProps> = ({
   //   const { analysis } = property?.investmentAnalysis;
 
   const getReturnColorClass = (returnValue: number): string => {
-    if (returnValue >= 8) return "return-excellent";
-    if (returnValue >= 4) return "return-good";
-    return "return-poor";
+    if (returnValue >= 8) return "text-green";
+    if (returnValue >= 4) return "text-orange";
+    return "text-red";
   };
 
   const getCashFlowColorClass = (cashFlow: number): string => {
-    return cashFlow >= 0 ? "cash-flow-positive" : "cash-flow-negative";
+    return cashFlow >= 0 ? "text-green" : "text-red";
   };
 
   const getStrategyColorClass = (strategy: string): string => {
     switch (strategy) {
       case "Strong Buy":
-        return "strategy-strong-buy";
+        return "text-green";
       case "Buy":
-        return "strategy-buy";
+        return "text-green";
       case "Consider":
-        return "strategy-consider";
+        return "text-yellow";
       case "Hold":
-        return "strategy-hold";
+        return "text-red";
       default:
-        return "strategy-avoid";
+        return "text-red";
     }
   };
 

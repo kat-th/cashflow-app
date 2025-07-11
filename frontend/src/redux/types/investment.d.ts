@@ -1,4 +1,6 @@
 export interface IAnalysisInputs {
+  purchasePrice: number;
+  monthlyRent: number;
   downPayment: number;
   interestRate: number;
   loanTerm: number;
@@ -31,21 +33,48 @@ export interface IDefaultAnalysis {
 }
 
 export interface IPropertyAnalysis {
+  // id: number;
+  // userId: number;
+  // address: string;
+  // city: string;
+  // state: string;
+  // propertyType: "single_family" | "multi_family" | "condo" | "townhouse";
+  // purchasePrice: number;
+  // rentZestimate: number;
+  // totalMonthlyExpenses: number;
+  // monthlyCashFlow: number;
+  // capRate: number;
+  // cashOnCashReturn: number;
+  // onePercentRule: boolean;
+  // twoPercentRule: boolean;
+  // createdAt: string;
+  // updatedAt: string;
+
   id: number;
   userId: number;
-  address: string;
-  city: string;
-  state: string;
-  propertyType: "single_family" | "multi_family" | "condo" | "townhouse";
+  propertyId?: number;
+  downPayment: number;
+  interestRate: number;
+  loanTerm: number;
+  insurance: number;
+  maintenance: number;
+  vacancy: number;
+  propertyTaxRate: number;
+  propertyManagement: number;
   purchasePrice: number;
-  rentZestimate: number;
+  monthlyRent: number;
+  totalMonthlyExpenses: number;
   monthlyCashFlow: number;
-  capRate: number;
   cashOnCashReturn: number;
+  netOperatingIncome: number;
+  capRate: number;
   onePercentRule: boolean;
   twoPercentRule: boolean;
+  strategy: string;
+  strategyReason: string;
   createdAt: string;
   updatedAt: string;
+  MarketProperty: IMarketProperty;
 }
 
 export interface IAnalysisId {
